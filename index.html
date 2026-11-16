@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Велика колекція смайликів та прапорів</title>
+    <!-- Twemoji для кольорового відображення прапорів на Windows та інших ОС -->
+    <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
     <style>
         :root {
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
             --success: #16a34a;
             --text: #1e293b;
-            --card-bg: rgba(255, 255, 255, 0.78);
-            --card-border: rgba(255, 255, 255, 0.6);
-            --panel-bg: rgba(255, 255, 255, 0.85);
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-border: rgba(255, 255, 255, 0.65);
+            --panel-bg: rgba(255, 255, 255, 0.88);
         }
 
         [data-theme="dark"] {
@@ -20,9 +22,9 @@
             --primary-hover: #60a5fa;
             --success: #22c55e;
             --text: #f1f5f9;
-            --card-bg: rgba(30, 41, 59, 0.75);
-            --card-border: rgba(51, 65, 85, 0.8);
-            --panel-bg: rgba(15, 23, 42, 0.85);
+            --card-bg: rgba(30, 41, 59, 0.78);
+            --card-border: rgba(51, 65, 85, 0.85);
+            --panel-bg: rgba(15, 23, 42, 0.88);
         }
 
         * {
@@ -34,7 +36,7 @@
             color: var(--text);
             margin: 0;
             padding: 20px;
-            padding-bottom: 90px;
+            padding-bottom: 100px;
             min-height: 100vh;
             background-size: 300% 300%;
             animation: gradientFlow 14s ease infinite;
@@ -44,6 +46,7 @@
         /* Динамічні фони для світлої теми */
         body:not([data-theme="dark"]).theme-all { background-image: linear-gradient(125deg, #e0e7ff, #f3e8ff, #e0f2fe, #fce7f3); }
         body:not([data-theme="dark"]).theme-favorites { background-image: linear-gradient(125deg, #fef08a, #fbcfe8, #fed7aa, #fef9c3); }
+        body:not([data-theme="dark"]).theme-recent { background-image: linear-gradient(125deg, #ddd6fe, #bae6fd, #e0e7ff, #f3e8ff); }
         body:not([data-theme="dark"]).theme-emotions { background-image: linear-gradient(125deg, #fef08a, #fed7aa, #fde047, #ffedd5); }
         body:not([data-theme="dark"]).theme-gestures { background-image: linear-gradient(125deg, #bae6fd, #a5f3fc, #dbeafe, #99f6e4); }
         body:not([data-theme="dark"]).theme-hearts { background-image: linear-gradient(125deg, #fecdd3, #fbcfe8, #fda4af, #ffe4e6); }
@@ -66,7 +69,7 @@
         }
 
         .wrapper {
-            max-width: 1120px;
+            max-width: 1140px;
             margin: 0 auto;
         }
 
@@ -96,7 +99,7 @@
             font-weight: 500;
         }
 
-        /* Верхня кнопка теми */
+        /* Верхні кнопки (звук, тема) */
         .top-actions {
             position: absolute;
             top: 0;
@@ -142,9 +145,16 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
         }
 
+        .search-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
         #searchBox {
-            width: 100%;
-            padding: 12px 16px;
+            flex: 1;
+            min-width: 220px;
+            padding: 11px 16px;
             font-size: 15px;
             background: var(--card-bg);
             color: var(--text);
@@ -157,6 +167,36 @@
         #searchBox:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Вибір відтінку шкіри */
+        .skin-tones {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 4px 8px;
+        }
+
+        .skin-btn {
+            background: none;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 2px 4px;
+            transition: transform 0.15s, border-color 0.15s;
+        }
+
+        .skin-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .skin-btn.active {
+            border-color: var(--primary);
+            background: rgba(37, 99, 235, 0.12);
         }
 
         .filter-buttons {
@@ -205,7 +245,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
             gap: 14px;
         }
 
@@ -246,8 +286,9 @@
             border: none;
             font-size: 16px;
             cursor: pointer;
-            opacity: 0.4;
+            opacity: 0.45;
             transition: opacity 0.2s, transform 0.2s;
+            padding: 0;
         }
 
         .fav-btn:hover {
@@ -261,7 +302,7 @@
 
         .emoji-name {
             font-size: 11px;
-            opacity: 0.75;
+            opacity: 0.78;
             font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
@@ -270,13 +311,23 @@
         }
 
         .emoji {
-            font-size: 34px;
-            user-select: all;
+            font-size: 36px;
             line-height: 1.1;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
             transition: transform 0.25s ease;
             margin: 2px 0;
             cursor: pointer;
+        }
+
+        /* Стилізація Twemoji зображень (для прапорів тощо) */
+        img.emoji {
+            height: 36px;
+            width: 36px;
+            margin: 0;
+            vertical-align: middle;
         }
 
         /* Анімації емодзі */
@@ -289,7 +340,9 @@
         body.theme-objects .card:hover .emoji { transform: scale(1.2) translateY(-3px); }
         body.theme-symbols .card:hover .emoji { transform: scale(1.25) rotate(12deg); }
         body.theme-flags .card:hover .emoji { animation: animFlagWave 0.9s ease-in-out infinite; }
-        body.theme-all .card:hover .emoji, body.theme-favorites .card:hover .emoji { transform: scale(1.2); }
+        body.theme-all .card:hover .emoji,
+        body.theme-favorites .card:hover .emoji,
+        body.theme-recent .card:hover .emoji { transform: scale(1.2); }
 
         @keyframes animBounce { 0%, 100% { transform: translateY(0) scale(1.1); } 50% { transform: translateY(-6px) scale(1.15); } }
         @keyframes animWaveHand { 0%, 100% { transform: rotate(0deg) scale(1.15); } 25% { transform: rotate(16deg) scale(1.15); } 75% { transform: rotate(-12deg) scale(1.15); } }
@@ -324,7 +377,7 @@
             background: var(--panel-bg);
             backdrop-filter: blur(16px);
             border-top: 1px solid var(--card-border);
-            padding: 12px 20px;
+            padding: 10px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -342,12 +395,30 @@
         .builder-content {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
             overflow-x: auto;
             padding: 4px;
-            font-size: 24px;
+            font-size: 26px;
             flex-grow: 1;
-            white-space: nowrap;
+        }
+
+        .builder-chip {
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 8px;
+            transition: background 0.15s, transform 0.15s;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .builder-chip:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: scale(1.15);
+        }
+
+        .builder-chip img.emoji {
+            height: 26px;
+            width: 26px;
         }
 
         .builder-actions {
@@ -368,11 +439,41 @@
             transition: background 0.2s;
         }
 
-        .builder-btn.clear {
-            background: #ef4444;
-        }
+        .builder-btn.clear { background: #ef4444; }
         .builder-btn.clear:hover { background: #dc2626; }
         .builder-btn:hover { background: var(--primary-hover); }
+
+        /* Toast повідомлення */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-80px);
+            background: #0f172a;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            z-index: 2000;
+            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast img.emoji {
+            height: 20px;
+            width: 20px;
+        }
 
         .no-results {
             text-align: center;
@@ -389,22 +490,36 @@
 </head>
 <body class="theme-all" data-theme="light">
 
+<div class="toast" id="toast">Скопійовано!</div>
+
 <div class="wrapper">
     <header>
         <div class="creator-tag">created by: VanilinCreator</div>
         <h1>✨ Колекція смайликів та прапорів</h1>
-        <p class="subtitle">Обирай, створюй комбінації та копіюй в один клік</p>
+        <p class="subtitle">Обирай, комбінуй та копіюй в один клік</p>
         
         <div class="top-actions">
+            <button class="icon-btn" id="soundBtn" title="Звуковий відгук: Увімкнено">🔊</button>
             <button class="icon-btn" id="themeBtn" title="Змінити тему">🌙</button>
         </div>
     </header>
 
     <div class="controls">
-        <input type="text" id="searchBox" placeholder="🔍 Пошук (наприклад: Україна, серце, усмішка, вогонь)...">
+        <div class="search-row">
+            <input type="text" id="searchBox" placeholder="🔍 Пошук (наприклад: Україна, прапор, серце, вогонь, стрілка)...">
+            <div class="skin-tones" title="Відтінок шкіри для жестів">
+                <button class="skin-btn active" data-tone="">🖐️</button>
+                <button class="skin-btn" data-tone="🏻">🖐🏻</button>
+                <button class="skin-btn" data-tone="🏼">🖐🏼</button>
+                <button class="skin-btn" data-tone="🏽">🖐🏽</button>
+                <button class="skin-btn" data-tone="🏾">🖐🏾</button>
+                <button class="skin-btn" data-tone="🏿">🖐🏿</button>
+            </div>
+        </div>
         <div class="filter-buttons" id="filterContainer">
             <button class="filter-btn active" data-category="all">🌈 Всі</button>
             <button class="filter-btn" data-category="favorites">⭐ Обране</button>
+            <button class="filter-btn" data-category="recent">🕒 Нещодавні</button>
         </div>
     </div>
 
@@ -414,7 +529,7 @@
 
 <!-- Нижня панель конструктора комбінацій -->
 <div class="builder-bar" id="builderBar">
-    <div class="builder-content" id="builderContent" title="Клікніть на смайлик у списку, щоб додати сюди"></div>
+    <div class="builder-content" id="builderContent" title="Натисніть на смайлик у рядку, щоб прибрати його"></div>
     <div class="builder-actions">
         <button class="builder-btn" id="copyAllBtn">📋 Скопіювати все</button>
         <button class="builder-btn clear" id="clearBuilderBtn">🗑️ Очистити</button>
@@ -441,12 +556,29 @@
         {
             id: "gestures",
             title: "👋 Жести та руки",
+            supportsSkinTone: true,
             items: [
                 { emoji: "👋", label: "Привіт", name: "привіт бувай рука махає" }, { emoji: "👌", label: "Добре", name: "добре ок клас супер" }, { emoji: "✌️", label: "Перемога", name: "перемога мир вікторія два" },
                 { emoji: "🤞", label: "На удачу", name: "на удачу пальці схрещені" }, { emoji: "🤟", label: "Люблю тебе", name: "люблю рок жест" }, { emoji: "👍", label: "Клас", name: "клас лайк добре вгору" },
                 { emoji: "👎", label: "Дизлайк", name: "дизлайк погано вниз" }, { emoji: "✊", label: "Кулак", name: "кулак єдність сила" }, { emoji: "👏", label: "Оплески", name: "оплески браво плескати" },
-                { emoji: "🙌", label: "Ура", name: "ура руки вгору радість" }, { emoji: "🤝", label: "Угода", name: "рукостискання угода договір" }, { emoji: "🙏", label: "Дякую", name: "дякую будь ласка молитва" },
-                { emoji: "💪", label: "Сила", name: "сила біцепс качок м'язи спорт" }
+                { emoji: "🙌", label: "Ура", name: "ура руки вгору радість" }, { emoji: "🙏", label: "Дякую", name: "дякую будь ласка молитва" }, { emoji: "💪", label: "Сила", name: "сила біцепс качок м'язи спорт" }
+            ]
+        },
+        {
+            id: "flags",
+            title: "🇺🇦 Прапори країн",
+            isFlag: true,
+            items: [
+                { emoji: "🇺🇦", label: "Україна", name: "Україна український прапор" }, { emoji: "🇵🇱", label: "Польща", name: "Польща польський прапор" }, { emoji: "🇺🇸", label: "США", name: "США Америка прапор" },
+                { emoji: "🇬🇧", label: "Велика Британія", name: "Велика Британія Англія прапор" }, { emoji: "🇩🇪", label: "Німеччина", name: "Німеччина німецький прапор" }, { emoji: "🇫🇷", label: "Франція", name: "Франція французький прапор" },
+                { emoji: "🇮🇹", label: "Італія", name: "Італія італійський прапор" }, { emoji: "🇪🇸", label: "Іспанія", name: "Іспанія іспанський прапор" }, { emoji: "🇨🇦", label: "Канада", name: "канадський прапор" },
+                { emoji: "🇱🇹", label: "Литва", name: "Литва литовський прапор" }, { emoji: "🇱🇻", label: "Латвія", name: "Латвія латвійський прапор" }, { emoji: "🇪🇪", label: "Естонія", name: "Естонія естонський прапор" },
+                { emoji: "🇨🇿", label: "Чехія", name: "Чехія чеський прапор" }, { emoji: "🇸🇰", label: "Словаччина", name: "Словаччина словацький прапор" }, { emoji: "🇷🇴", label: "Румунія", name: "Румунія румунський прапор" },
+                { emoji: "🇲🇩", label: "Молдова", name: "Молдова молдовський прапор" }, { emoji: "🇬🇪", label: "Грузія", name: "Грузія грузинський прапор" }, { emoji: "🇹🇷", label: "Туреччина", name: "Туреччина турецький прапор" },
+                { emoji: "🇯🇵", label: "Японія", name: "Японія японський прапор" }, { emoji: "🇰🇷", label: "Південна Корея", name: "Південна Корея корейський прапор" }, { emoji: "🇨🇳", label: "Китай", name: "Китай китайський прапор" },
+                { emoji: "🇦🇺", label: "Австралія", name: "Австралія австралійський прапор" }, { emoji: "🇧🇷", label: "Бразилія", name: "Бразилія бразильський прапор" }, { emoji: "🇸🇪", label: "Швеція", name: "Швеція шведський прапор" },
+                { emoji: "🇳🇴", label: "Норвегія", name: "Норвегія норвезький прапор" }, { emoji: "🇫🇮", label: "Фінляндія", name: "Фінляндія фінський прапор" }, { emoji: "🇳🇱", label: "Нідерланди", name: "Нідерланди Голландія прапор" },
+                { emoji: "🇨🇭", label: "Швейцарія", name: "Швейцарія швейцарський прапор" }, { emoji: "🇪🇺", label: "Євросоюз", name: "Євросоюз ЄС Європа прапор" }, { emoji: "🇺🇳", label: "ООН", name: "ООН прапор світу" }
             ]
         },
         {
@@ -460,23 +592,14 @@
             ]
         },
         {
-            id: "flags",
-            title: "🇺🇦 Прапори країн",
-            items: [
-                { emoji: "🇺🇦", label: "Україна", name: "Україна український прапор" }, { emoji: "🇵🇱", label: "Польща", name: "Польща польський прапор" }, { emoji: "🇺🇸", label: "США", name: "США Америка прапор" },
-                { emoji: "🇬🇧", label: "Велика Британія", name: "Велика Британія Англія прапор" }, { emoji: "🇩🇪", label: "Німеччина", name: "Німеччина німецький прапор" }, { emoji: "🇫🇷", label: "Франція", name: "Франція французький прапор" },
-                { emoji: "🇮🇹", label: "Італія", name: "Італія італійський прапор" }, { emoji: "🇪🇸", label: "Іспанія", name: "Іспанія іспанський прапор" }, { emoji: "🇨🇦", label: "Канада", name: "канадський прапор" },
-                { emoji: "🇪🇺", label: "Євросоюз", name: "Євросоюз ЄС Європа прапор" }, { emoji: "🇬🇪", label: "Грузія", name: "грузинський прапор" }
-            ]
-        },
-        {
             id: "animals",
             title: "🐾 Тварини та природа",
             items: [
-                { emoji: "🐶", label: "Собака", name: "собака пес цуценя" }, { emoji: "🐱", label: "Кіт", name: "кіт кішка кошеня" }, { emoji: "🦊", label: "Лисиця", name: "лисиця лис" },
-                { emoji: "🐼", label: "Панда", name: "панда" }, { emoji: "🦁", label: "Лев", name: "лев цар звірів" }, { emoji: "🦄", label: "Єдиноріг", name: "єдиноріг казка магія" },
-                { emoji: "🐝", label: "Бджола", name: "бджола мед" }, { emoji: "🦋", label: "Метелик", name: "метелик краса" }, { emoji: "🐢", label: "Черепаха", name: "черепаха" },
-                { emoji: "🐬", label: "Дельфін", name: "дельфін" }, { emoji: "🦈", label: "Акула", name: "акула хижак" }, { emoji: "🦔", label: "Їжак", name: "їжак їжачок" }
+                { emoji: "🐶", label: "Собака", name: "собака пес цуценя" }, { emoji: "🐱", label: "Кіт", name: "кіт кішка кошеня" }, { emoji: "🐹", label: "Хом'як", name: "хом'як хомяк" },
+                { emoji: "🦊", label: "Лисиця", name: "лисиця лис" }, { emoji: "🐼", label: "Панда", name: "панда" }, { emoji: "🦁", label: "Лев", name: "лев цар звірів" },
+                { emoji: "🦄", label: "Єдиноріг", name: "єдиноріг казка магія" }, { emoji: "🐝", label: "Бджола", name: "бджола мед" }, { emoji: "🦋", label: "Метелик", name: "метелик краса" },
+                { emoji: "🐢", label: "Черепаха", name: "черепаха" }, { emoji: "🐬", label: "Дельфін", name: "дельфін" }, { emoji: "🦈", label: "Акула", name: "акула хижак" },
+                { emoji: "🦔", label: "Їжак", name: "їжак їжачок" }
             ]
         },
         {
@@ -484,8 +607,9 @@
             title: "🍏 Їжа та напої",
             items: [
                 { emoji: "🍏", label: "Яблуко", name: "зелене яблуко" }, { emoji: "🍌", label: "Банан", name: "банан" }, { emoji: "🍉", label: "Кавун", name: "кавун літо" },
-                { emoji: "🍕", label: "Піца", name: "піца" }, { emoji: "🍔", label: "Бургер", name: "бургер гамбургер" }, { emoji: "🍦", label: "Морозиво", name: "морозиво" },
-                { emoji: "🍩", label: "Пончик", name: "пончик донат" }, { emoji: "☕", label: "Кава / Чай", name: "кава чай чашка" }, { emoji: "🍷", label: "Вино", name: "вино келих" }
+                { emoji: "🍒", label: "Вишня", name: "вишня черешня" }, { emoji: "🍕", label: "Піца", name: "піца" }, { emoji: "🍔", label: "Бургер", name: "бургер гамбургер" },
+                { emoji: "🍦", label: "Морозиво", name: "морозиво" }, { emoji: "🍩", label: "Пончик", name: "пончик донат" }, { emoji: "☕", label: "Кава / Чай", name: "кава чай чашка" },
+                { emoji: "🍷", label: "Вино", name: "вино келих" }
             ]
         },
         {
@@ -506,10 +630,12 @@
         },
         {
             id: "symbols",
-            title: "⭐ Символи та активність",
+            title: "⭐ Символи та оформлення",
             items: [
-                { emoji: "⚽", label: "Футбол", name: "футбол м'яч спорт" }, { emoji: "⭐", label: "Зірка", name: "зірка" }, { emoji: "🌈", label: "Веселка", name: "веселка райдуга" },
-                { emoji: "⚡", label: "Блискавка", name: "блискавка електрика" }, { emoji: "🔥", label: "Вогонь", name: "вогонь полум'я гаряче" }, { emoji: "🎉", label: "Святкування", name: "хлопавка свято вітаю" }
+                { emoji: "⚽", label: "Футбол", name: "футбол м'яч спорт" }, { emoji: "⭐", label: "Зірка", name: "зірка" }, { emoji: "✨", label: "Блискітки", name: "блискітки сяйво магія" },
+                { emoji: "🌈", label: "Веселка", name: "веселка райдуга" }, { emoji: "⚡", label: "Блискавка", name: "блискавка електрика" }, { emoji: "🔥", label: "Вогонь", name: "вогонь полум'я гаряче" },
+                { emoji: "🎉", label: "Святкування", name: "хлопавка свято вітаю" }, { emoji: "✅", label: "Галочка", name: "галочка виконано так" }, { emoji: "❌", label: "Хрестик", name: "хрестик ні помилка" },
+                { emoji: "➡️", label: "Стрілка вправо", name: "стрілка вправо далі" }, { emoji: "⬇️", label: "Стрілка вниз", name: "стрілка вниз" }, { emoji: "📌", label: "Кнопка", name: "кнопка закріпити важливо" }
             ]
         }
     ];
@@ -519,15 +645,61 @@
     const searchBox = document.getElementById("searchBox");
     const noResults = document.getElementById("noResults");
     const themeBtn = document.getElementById("themeBtn");
+    const soundBtn = document.getElementById("soundBtn");
     const builderBar = document.getElementById("builderBar");
     const builderContent = document.getElementById("builderContent");
     const copyAllBtn = document.getElementById("copyAllBtn");
     const clearBuilderBtn = document.getElementById("clearBuilderBtn");
+    const toast = document.getElementById("toast");
 
     let activeCategory = "all";
     let searchQuery = "";
+    let selectedSkinTone = "";
+    let soundEnabled = true;
     let favorites = JSON.parse(localStorage.getItem("emoji_favorites")) || [];
+    let recent = JSON.parse(localStorage.getItem("emoji_recent")) || [];
     let customBuilder = [];
+    let toastTimer;
+
+    // Синтезатор приємного звуку кліку (Web Audio API)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playClickSound() {
+        if (!soundEnabled) return;
+        try {
+            if (audioCtx.state === "suspended") audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(620, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(980, audioCtx.currentTime + 0.06);
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.06);
+        } catch (e) {}
+    }
+
+    // Показ Toast-повідомлення
+    function showToast(emoji, text = "Скопійовано:") {
+        toast.innerHTML = `${text} <span>${emoji}</span>`;
+        if (typeof twemoji !== "undefined") {
+            twemoji.parse(toast, { folder: 'svg', ext: '.svg' });
+        }
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.classList.remove("show");
+        }, 1600);
+    }
+
+    // Перемикач звуку
+    soundBtn.onclick = () => {
+        soundEnabled = !soundEnabled;
+        soundBtn.textContent = soundEnabled ? "🔊" : "🔇";
+        soundBtn.title = soundEnabled ? "Звуковий відгук: Увімкнено" : "Звуковий відгук: Вимкнено";
+    };
 
     // Зміна теми (Світла / Темна)
     themeBtn.onclick = () => {
@@ -536,6 +708,22 @@
         document.body.setAttribute("data-theme", newTheme);
         themeBtn.textContent = newTheme === "light" ? "🌙" : "☀️";
     };
+
+    // Перемикач відтінку шкіри
+    document.querySelectorAll(".skin-btn").forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll(".skin-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            selectedSkinTone = btn.dataset.tone;
+            render();
+        };
+    });
+
+    // Застосування відтінку шкіри до емодзі жестів
+    function applySkinTone(emoji, supportsTone) {
+        if (!supportsTone || !selectedSkinTone) return emoji;
+        return emoji.replace(/\uFE0F/g, "") + selectedSkinTone;
+    }
 
     // Побудова кнопок фільтрації категорій
     categories.forEach(cat => {
@@ -549,6 +737,7 @@
 
     filterContainer.querySelector('[data-category="all"]').onclick = (e) => switchCategory("all", e.target);
     filterContainer.querySelector('[data-category="favorites"]').onclick = (e) => switchCategory("favorites", e.target);
+    filterContainer.querySelector('[data-category="recent"]').onclick = (e) => switchCategory("recent", e.target);
 
     function switchCategory(catId, btnElement) {
         document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
@@ -556,6 +745,14 @@
         activeCategory = catId;
         document.body.className = `theme-${catId}`;
         render();
+    }
+
+    // Збереження в історію нещодавно скопійованих
+    function addToRecent(emoji) {
+        recent = recent.filter(e => e !== emoji);
+        recent.unshift(emoji);
+        if (recent.length > 18) recent.pop();
+        localStorage.setItem("emoji_recent", JSON.stringify(recent));
     }
 
     // Додавання/видалення з обраного
@@ -573,29 +770,40 @@
 
     // Додавання у нижній буфер
     function addToBuilder(emoji) {
+        playClickSound();
         customBuilder.push(emoji);
         updateBuilderBar();
     }
 
+    // Оновлення нижнього буфера (з можливістю видалення окремого елемента по кліку)
     function updateBuilderBar() {
+        builderContent.innerHTML = "";
         if (customBuilder.length > 0) {
             builderBar.classList.add("visible");
-            builderContent.textContent = customBuilder.join(" ");
+            customBuilder.forEach((em, idx) => {
+                const chip = document.createElement("span");
+                chip.className = "builder-chip";
+                chip.textContent = em;
+                chip.title = "Натисніть, щоб видалити цей смайлик";
+                chip.onclick = () => {
+                    customBuilder.splice(idx, 1);
+                    updateBuilderBar();
+                };
+                builderContent.appendChild(chip);
+            });
+            if (typeof twemoji !== "undefined") {
+                twemoji.parse(builderContent, { folder: 'svg', ext: '.svg' });
+            }
         } else {
             builderBar.classList.remove("visible");
         }
     }
 
     copyAllBtn.onclick = () => {
-        const text = customBuilder.join(" ");
-        navigator.clipboard.writeText(text).catch(() => {
-            const tempInput = document.createElement("textarea");
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-        });
+        const text = customBuilder.join("");
+        copyText(text);
+        playClickSound();
+        showToast(text, "Скопійовано набір:");
         copyAllBtn.textContent = "Скопійовано! ✓";
         setTimeout(() => copyAllBtn.textContent = "📋 Скопіювати все", 1200);
     };
@@ -605,20 +813,46 @@
         updateBuilderBar();
     };
 
+    async function copyText(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+        } catch {
+            const tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+        }
+    }
+
+    // Перевірка, чи є символ прапором (регіональні індикатори)
+    function isFlagEmoji(str) {
+        const points = Array.from(str).map(c => c.codePointAt(0));
+        return points.length >= 2 && points[0] >= 0x1F1E6 && points[0] <= 0x1F1FF;
+    }
+
     // Рендеринг карток
     function render() {
         container.innerHTML = "";
         let totalVisible = 0;
 
         let catsToRender = categories;
+        const allItemsFlat = categories.flatMap(c => c.items.map(it => ({ ...it, supportsSkinTone: c.supportsSkinTone, isFlag: c.isFlag })));
 
         if (activeCategory === "favorites") {
-            const favItems = categories.flatMap(c => c.items).filter(item => favorites.includes(item.emoji));
+            const favItems = allItemsFlat.filter(item => favorites.includes(item.emoji));
             catsToRender = [{ id: "favorites", title: "⭐ Моє обране", items: favItems }];
+        } else if (activeCategory === "recent") {
+            const recentItems = recent.map(em => {
+                const found = allItemsFlat.find(it => it.emoji === em);
+                return found || { emoji: em, label: "Нещодавній", name: "" };
+            });
+            catsToRender = [{ id: "recent", title: "🕒 Нещодавно скопійовані", items: recentItems }];
         }
 
         catsToRender.forEach(cat => {
-            if (activeCategory !== "all" && activeCategory !== "favorites" && activeCategory !== cat.id) return;
+            if (activeCategory !== "all" && activeCategory !== "favorites" && activeCategory !== "recent" && activeCategory !== cat.id) return;
 
             const filteredEmojis = cat.items.filter(item => {
                 if (!searchQuery) return true;
@@ -641,47 +875,45 @@
             grid.className = "grid";
 
             filteredEmojis.forEach((item, index) => {
+                const supportsTone = cat.supportsSkinTone || item.supportsSkinTone;
+                const displayEmoji = applySkinTone(item.emoji, supportsTone);
                 const isFav = favorites.includes(item.emoji);
+
                 const card = document.createElement("div");
                 card.className = `card ${isFav ? 'is-favorite' : ''}`;
                 card.style.animationDelay = `${Math.min(index * 10, 250)}ms`;
 
-                // Кнопка зірочки
                 const favBtn = document.createElement("button");
                 favBtn.className = "fav-btn";
                 favBtn.textContent = isFav ? "⭐" : "☆";
+                favBtn.title = isFav ? "Прибрати з обраного" : "Додати в обране";
                 favBtn.onclick = (e) => toggleFavorite(item.emoji, e);
 
                 const nameSpan = document.createElement("span");
                 nameSpan.className = "emoji-name";
                 nameSpan.textContent = item.label;
+                nameSpan.title = item.label;
 
                 const span = document.createElement("span");
                 span.className = "emoji";
-                span.textContent = item.emoji;
-                span.title = "Клікніть, щоб додати у буфер знизу";
-                span.onclick = () => addToBuilder(item.emoji);
+                span.textContent = displayEmoji;
+                span.title = "Клікніть, щоб додати у конструктор знизу";
+                span.onclick = () => addToBuilder(displayEmoji);
 
                 const btn = document.createElement("button");
                 btn.type = "button";
                 btn.className = "copy-btn";
-                const defaultLabel = `Копіювати`;
+                const defaultLabel = "Копіювати";
                 btn.textContent = defaultLabel;
 
                 let resetTimer;
-                btn.onclick = async () => {
-                    try {
-                        await navigator.clipboard.writeText(item.emoji);
-                    } catch {
-                        const tempInput = document.createElement("textarea");
-                        tempInput.value = item.emoji;
-                        document.body.appendChild(tempInput);
-                        tempInput.select();
-                        document.execCommand("copy");
-                        document.body.removeChild(tempInput);
-                    }
+                btn.onclick = () => {
+                    copyText(displayEmoji);
+                    playClickSound();
+                    addToRecent(item.emoji);
+                    showToast(displayEmoji);
 
-                    btn.textContent = `Скопійовано! ✓`;
+                    btn.textContent = "Скопійовано! ✓";
                     btn.classList.add("copied");
 
                     clearTimeout(resetTimer);
@@ -701,6 +933,17 @@
             container.appendChild(grid);
         });
 
+        // Парсимо прапори через Twemoji, щоб на Windows відображались кольорові SVG-прапори замість літер UA/PL
+        if (typeof twemoji !== "undefined") {
+            document.querySelectorAll(".emoji").forEach(el => {
+                if (isFlagEmoji(el.textContent)) {
+                    twemoji.parse(el, { folder: 'svg', ext: '.svg' });
+                }
+            });
+            twemoji.parse(filterContainer, { folder: 'svg', ext: '.svg' });
+            document.querySelectorAll("h2").forEach(h => twemoji.parse(h, { folder: 'svg', ext: '.svg' }));
+        }
+
         noResults.style.display = totalVisible === 0 ? "block" : "none";
     }
 
@@ -709,7 +952,7 @@
         render();
     };
 
-    render();
+    window.addEventListener("DOMContentLoaded", render);
 </script>
 
 </body>
