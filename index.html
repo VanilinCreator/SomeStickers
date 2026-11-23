@@ -1045,11 +1045,11 @@
   <h2 id="aiWelcomeTitle">🤖 Спробуй SomeStickers AI</h2>
   <p>На сайті з’явився локальний AI-помічник. Щоб користуватися ним, можна один раз завантажити мовну модель на цей пристрій.</p>
   <div class="ai-meta"><strong>Gemma 3 1B · приблизно 711 МБ</strong><br>Працює у браузері через WebGPU. Потрібне підключення до інтернету для першого завантаження.</div>
-  <div class="ai-welcome-actions"><a class="ai-welcome-primary" href="assistant.html">Перейти до завантаження</a><button class="ai-welcome-later" id="aiWelcomeLater" type="button">Не зараз</button></div>
+  <div class="ai-welcome-actions"><a class="ai-welcome-primary" id="aiWelcomeGo" href="assistant.html">Перейти до завантаження</a><button class="ai-welcome-later" id="aiWelcomeLater" type="button">Не зараз</button></div>
  </div>
 </div>
 <script>
-(()=>{const key='SomeStickersAIWelcomeSeen';if(localStorage.getItem(key))return;const modal=document.getElementById('aiWelcome');if(!modal)return;modal.classList.add('show');document.getElementById('aiWelcomeLater').addEventListener('click',()=>{localStorage.setItem(key,'1');modal.classList.remove('show')});})();
+(()=>{const key='SomeStickersAIWelcomeSeen';if(localStorage.getItem(key))return;const modal=document.getElementById('aiWelcome');if(!modal)return;modal.classList.add('show');document.getElementById('aiWelcomeLater').addEventListener('click',()=>{localStorage.setItem(key,'1');modal.classList.remove('show')});document.getElementById('aiWelcomeGo').addEventListener('click',()=>localStorage.setItem(key,'1'));})();
 </script>
 
 </body>
