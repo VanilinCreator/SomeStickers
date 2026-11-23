@@ -68,20 +68,43 @@ async function startAI(){
   // Зберігаємо артефакти моделі в постійному сховищі браузера.
   if(navigator.storage&&navigator.storage.persist){try{await navigator.storage.persist()}catch(storageError){console.warn('Не вдалося закріпити сховище:',storageError)}}
   const progress=p=>{const pct=Math.max(0,Math.min(100,Math.round((p.progress||0)*100)));$('progressBar').style.width=pct+'%';setStatus(p.text||('Підготовка моделі: '+pct+'%'))};
-  // Service Worker може повторно використовувати рушій між оновленнями сторінки.
+  // IndexedDB залишаємо тим самим сховищем, щоб не змушувати браузер
+  // повторно завантажувати модель через зміну типу кешу.
+  const appConfig={...webllm.prebuiltAppConfig,cacheBackend:'indexeddb'};
   if('serviceWorker' in navigator){
    try{
     await navigator.serviceWorker.register('./webllm-sw.js',{type:'module'});
     await navigator.serviceWorker.ready;
-    const appConfig={...webllm.prebuiltAppConfig,cacheBackend:'indexeddb'};
-    engine=await webllm.CreateServiceWorkerMLCEngine(MODEL_ID,{appConfig,initProgressCallback:progress});
+
+    // На першому відвідуванні активний Service Worker не завжди одразу
+    // контролює цю вкладку. Даємо йому час отримати контроль.
+    if(!navigator.serviceWorker.controller){
+     await new Promise(resolve=>{
+      let finished=false;
+      const finish=()=>{
+       if(finished)return;
+       finished=true;
+       clearTimeout(timer);
+       navigator.serviceWorker.removeEventListener('controllerchange',finish);
+       resolve();
+      };
+      const timer=setTimeout(finish,5000);
+      navigator.serviceWorker.addEventListener('controllerchange',finish,{once:true});
+      if(navigator.serviceWorker.controller)finish();
+     });
+    }
+
+    if(navigator.serviceWorker.controller){
+     engine=await webllm.CreateServiceWorkerMLCEngine(MODEL_ID,{appConfig,initProgressCallback:progress});
+    }else{
+     console.warn('Service Worker ще не контролює вкладку; використовую IndexedDB-кеш напряму.');
+     engine=await webllm.CreateMLCEngine(MODEL_ID,{appConfig,initProgressCallback:progress});
+    }
    }catch(workerError){
-    console.warn('Service Worker недоступний, використовую локальний кеш:',workerError);
-    const appConfig={...webllm.prebuiltAppConfig,cacheBackend:'indexeddb'};
+    console.warn('Service Worker недоступний, використовую IndexedDB-кеш:',workerError);
     engine=await webllm.CreateMLCEngine(MODEL_ID,{appConfig,initProgressCallback:progress});
    }
   }else{
-   const appConfig={...webllm.prebuiltAppConfig,cacheBackend:'indexeddb'};
    engine=await webllm.CreateMLCEngine(MODEL_ID,{appConfig,initProgressCallback:progress});
   }
   localStorage.setItem(STORE_KEY,'accepted');$('progressBar').style.width='100%';setStatus('✓ Модель готова. Можна спілкуватися.');setReady();restoreHistory();
