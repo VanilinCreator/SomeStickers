@@ -26,6 +26,7 @@ select,button{font:inherit}select{max-width:48%;padding:9px 12px;border:1px soli
 <label class="setting"><span><strong>Розмір карток</strong><small>Скільки емодзі поміщається в ряд</small></span><select id="cardSize"><option value="compact">Компактний</option><option value="normal">Звичайний</option><option value="large">Великий</option></select></label>
 <label class="setting"><span><strong>Показувати назви емодзі</strong><small>Підпис під кожним емодзі</small></span><input class="switch" type="checkbox" id="showNames"></label>
 <label class="setting"><span><strong>Анімації інтерфейсу</strong><small>Плавні переходи та рух карток</small></span><input class="switch" type="checkbox" id="motion"></label>
+<label class="setting"><span><strong>Ступінь оптимізації</strong><small>Впливає на анімації, розмиття та тіні на всіх сторінках сайту</small></span><select id="optimization"><option value="1">1 — Не оптимізовано</option><option value="2">2 — Легка оптимізація</option><option value="3">3 — Збалансовано</option><option value="4">4 — Висока оптимізація</option><option value="5">5 — Максимальна оптимізація</option></select></label>
 </section>
 <section class="section"><h2>🔊 Звук та взаємодія</h2><p class="hint">Керування відгуком під час натискання.</p>
 <label class="setting"><span><strong>Звуковий відгук</strong><small>Короткий звук під час дій</small></span><input class="switch" type="checkbox" id="sound"></label>
@@ -45,7 +46,7 @@ select,button{font:inherit}select{max-width:48%;padding:9px 12px;border:1px soli
 </div>
 <script>
 const KEY='SomeStickersSettings';
-const defaults={theme:'system',cardSize:'normal',showNames:true,motion:true,sound:true,startCategory:'all',confirmClear:true};
+const defaults={theme:'system',cardSize:'normal',showNames:true,motion:true,optimization:3,sound:true,startCategory:'all',confirmClear:true};
 let prefs={...defaults};
 try{prefs={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){}
 const $=id=>document.getElementById(id);
@@ -63,4 +64,5 @@ $('clearFavorites').onclick=()=>clearKey('emoji_favorites','Обране');
 $('reset').onclick=()=>{if(!confirm('Скинути всі параметри SomeStickers?'))return;prefs={...defaults};localStorage.setItem(KEY,JSON.stringify(prefs));load();applyTheme();status('Параметри скинуто')};
 load();applyTheme();
 </script>
+<script src="optimization.js"></script>
 </body></html>
