@@ -1021,6 +1021,10 @@
         if (prefs.cardSize === 'compact') document.body.classList.add('cards-compact');
         if (prefs.cardSize === 'large') document.body.classList.add('cards-large');
         if (prefs.showNames === false) document.body.classList.add('hide-emoji-names');
+        if (prefs.startCategory && prefs.startCategory !== 'all') {
+          const startButton = document.querySelector('.filter-btn[data-category="' + prefs.startCategory + '"]');
+          if (startButton) startButton.click();
+        }
         if (prefs.sound === false && typeof soundEnabled !== 'undefined') {
           soundEnabled = false;
           const soundButton = document.getElementById('soundBtn');
