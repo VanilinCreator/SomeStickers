@@ -64,12 +64,25 @@ async function startAI(){
  if(!('gpu' in navigator)){setStatus('Цей браузер не підтримує WebGPU. Спробуй актуальний Chrome або Edge на пристрої з підтримкою WebGPU.');return}
  loading=true;$('loadBtn').disabled=true;$('loadBtn').textContent='Завантаження…';
  try{
-  const {CreateMLCEngine,prebuiltAppConfig}=await import('https://esm.run/@mlc-ai/web-llm');
-  // IndexedDB зберігає файли моделі між перезавантаженнями сторінки.
-  // Просимо браузер не видаляти сховище автоматично, якщо це підтримується.
+  const webllm=await import('https://esm.run/@mlc-ai/web-llm');
+  // Зберігаємо артефакти моделі в постійному сховищі браузера.
   if(navigator.storage&&navigator.storage.persist){try{await navigator.storage.persist()}catch(storageError){console.warn('Не вдалося закріпити сховище:',storageError)}}
-  const appConfig={...prebuiltAppConfig,cacheBackend:'indexeddb'};
-  engine=await CreateMLCEngine(MODEL_ID,{appConfig,initProgressCallback:p=>{const pct=Math.max(0,Math.min(100,Math.round((p.progress||0)*100)));$('progressBar').style.width=pct+'%';setStatus(p.text||('Підготовка моделі: '+pct+'%'))}});
+  const progress=p=>{const pct=Math.max(0,Math.min(100,Math.round((p.progress||0)*100)));$('progressBar').style.width=pct+'%';setStatus(p.text||('Підготовка моделі: '+pct+'%'))};
+  // Service Worker може повторно використовувати рушій між оновленнями сторінки.
+  if('serviceWorker' in navigator){
+   try{
+    await navigator.serviceWorker.register('./webllm-sw.js',{type:'module'});
+    await navigator.serviceWorker.ready;
+    engine=await webllm.CreateServiceWorkerMLCEngine(MODEL_ID,{initProgressCallback:progress});
+   }catch(workerError){
+    console.warn('Service Worker недоступний, використовую локальний кеш:',workerError);
+    const appConfig={...webllm.prebuiltAppConfig,cacheBackend:'indexeddb'};
+    engine=await webllm.CreateMLCEngine(MODEL_ID,{appConfig,initProgressCallback:progress});
+   }
+  }else{
+   const appConfig={...webllm.prebuiltAppConfig,cacheBackend:'indexeddb'};
+   engine=await webllm.CreateMLCEngine(MODEL_ID,{appConfig,initProgressCallback:progress});
+  }
   localStorage.setItem(STORE_KEY,'accepted');$('progressBar').style.width='100%';setStatus('✓ Модель готова. Можна спілкуватися.');setReady();restoreHistory();
  }catch(err){engine=null;setStatus('Не вдалося запустити модель: '+(err&&err.message?err.message:'невідома помилка')+'. Перевір інтернет, WebGPU та вільну пам’ять пристрою.');$('loadBtn').disabled=false;$('loadBtn').textContent='Спробувати ще раз'}
  finally{loading=false}
