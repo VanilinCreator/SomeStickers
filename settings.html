@@ -51,7 +51,8 @@ let prefs={...defaults};
 try{prefs={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){}
 const $=id=>document.getElementById(id);
 function status(message){$('status').textContent=message}
-function applyOptimization(){if(window.applySomeStickersOptimization)window.applySomeStickersOptimization()}\nfunction save(){localStorage.setItem(KEY,JSON.stringify(prefs));applyTheme();applyOptimization();status('✓ Налаштування збережено');}
+function applyOptimization(){if(window.applySomeStickersOptimization)window.applySomeStickersOptimization()}
+function save(){localStorage.setItem(KEY,JSON.stringify(prefs));applyTheme();applyOptimization();status('✓ Налаштування збережено');}
 function applyTheme(){const t=prefs.theme==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):prefs.theme;document.documentElement.dataset.theme=t}
 function load(){Object.keys(defaults).forEach(k=>{const el=$(k);if(el.type==='checkbox')el.checked=!!prefs[k];else el.value=prefs[k]})}
 Object.keys(defaults).forEach(k=>$(k).addEventListener('change',e=>{prefs[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;save()}));
