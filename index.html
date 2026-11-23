@@ -501,21 +501,6 @@
         <div class="top-actions">
             <button class="icon-btn" id="soundBtn" title="Звуковий відгук: Увімкнено">🔊</button>
             <button class="icon-btn" id="themeBtn" title="Змінити тему">🌙</button>
-            <a class="icon-btn settings-shortcut" href="settings.html?v=017" title="Налаштування" aria-label="Налаштування" style="text-decoration:none">⚙️</a>
-            <div class="site-menu" id="siteMenu">
-      <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-label="Відкрити меню" aria-expanded="false" aria-controls="siteMenuPanel">⋮</button>
-      <nav class="site-menu-panel" id="siteMenuPanel" aria-label="Основна навігація" hidden>
-        <div class="site-menu-title">Меню SomeStickers</div>
-        <a href="sticker-editor.html">🎨 Створити стікер</a>
-        <a href="sticker-sets.html">📦 Мої набори</a>
-        <a href="catalog.html">🛍️ Каталог</a>
-        <a href="account.html">👤 Особистий кабінет</a>
-        <a href="telegram.html">✈️ Інтеграція з Telegram</a>
-        <a href="assistant.html">🤖 AI Assistant</a>
-        <a href="changelog.html?v=017">📋 Change Log</a>
-      </nav>
-    </div>
-        </div>
     </header>
 
     <div class="controls">
@@ -972,36 +957,7 @@
 
     
 
-    <style>
-      .site-menu{position:relative;z-index:1600}
-      .menu-toggle{font-size:27px;line-height:1;padding:0}
-      .site-menu-panel{position:absolute;top:50px;right:0;width:min(280px,calc(100vw - 32px));padding:9px;background:var(--panel-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--card-border);border-radius:15px;box-shadow:0 14px 38px #0003;display:flex;flex-direction:column;gap:5px}
-      .site-menu-panel[hidden]{display:none}
-      .site-menu-title{padding:9px 11px 7px;font-size:12px;font-weight:700;opacity:.65;letter-spacing:.4px}
-      .site-menu-panel a{display:block;padding:11px 12px;border-radius:10px;color:var(--text);text-decoration:none;font:600 14px system-ui;transition:background .18s,transform .18s}
-      .site-menu-panel a:hover{background:var(--card-bg);transform:translateX(2px)}
-      @media(max-width:520px){.site-menu-panel{position:fixed;top:68px;right:12px}}
-    </style>
-    <script>
-      (() => {
-        const toggle = document.getElementById('menuToggle');
-        const panel = document.getElementById('siteMenuPanel');
-        if (!toggle || !panel) return;
-        const closeMenu = () => { panel.hidden = true; toggle.setAttribute('aria-expanded','false'); };
-        toggle.addEventListener('click', () => {
-          const opening = panel.hidden;
-          panel.hidden = !opening;
-          toggle.setAttribute('aria-expanded', String(opening));
-        });
-        document.addEventListener('click', event => {
-          if (!event.target.closest('#siteMenu')) closeMenu();
-        });
-        document.addEventListener('keydown', event => {
-          if (event.key === 'Escape') { closeMenu(); toggle.focus(); }
-        });
-        panel.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-      })();
-    </script>
+
 
 
     <style>
@@ -1053,6 +1009,7 @@
 (()=>{const key='SomeStickersAIWelcomeSeen';if(localStorage.getItem(key))return;const modal=document.getElementById('aiWelcome');if(!modal)return;modal.classList.add('show');document.getElementById('aiWelcomeLater').addEventListener('click',()=>{localStorage.setItem(key,'1');modal.classList.remove('show')});document.getElementById('aiWelcomeGo').addEventListener('click',()=>localStorage.setItem(key,'1'));})();
 </script>
 
+<script src="navigation.js"></script>
 <script src="optimization.js"></script>
 </body>
 </html>
