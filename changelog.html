@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<title>Change Log — SomeStickers</title>
+<style>
+:root{--bg1:#e0e7ff;--bg2:#f3e8ff;--panel:rgba(255,255,255,.86);--text:#1e293b;--muted:#64748b;--border:rgba(148,163,184,.28);--accent:#2563eb;--chip:rgba(37,99,235,.1)}
+body[data-theme=dark]{--bg1:#0f172a;--bg2:#1e1b4b;--panel:rgba(15,23,42,.88);--text:#f1f5f9;--muted:#a8b4c7;--border:rgba(71,85,105,.65);--accent:#60a5fa;--chip:rgba(96,165,250,.14)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:28px 18px 60px;font-family:Segoe UI,system-ui,sans-serif;color:var(--text);background:linear-gradient(135deg,var(--bg1),var(--bg2));transition:background .25s,color .25s}
+.wrap{max-width:850px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px}.back,.theme{border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:12px;padding:10px 14px;text-decoration:none;font:600 14px system-ui;cursor:pointer}
+.hero{text-align:center;padding:30px 20px;border:1px solid var(--border);background:var(--panel);border-radius:22px;backdrop-filter:blur(14px);box-shadow:0 12px 35px #0000000d}
+.hero h1{font-size:clamp(28px,5vw,42px);margin:0 0 8px}.hero p{margin:0;color:var(--muted)}
+.timeline{position:relative;margin:28px 0 0;padding-left:26px}.timeline:before{content:"";position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:var(--border)}
+.release{position:relative;margin:0 0 16px;padding:18px 20px;background:var(--panel);border:1px solid var(--border);border-radius:17px;backdrop-filter:blur(10px)}
+.release:before{content:"";position:absolute;left:-24px;top:24px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--chip)}
+.release-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.release h2{font-size:18px;margin:0}.tag{font-size:12px;font-weight:700;color:var(--accent);background:var(--chip);padding:5px 9px;border-radius:20px;white-space:nowrap}
+ul{margin:0;padding-left:20px;line-height:1.7}li{padding-left:2px}.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:28px}
+@media(max-width:520px){body{padding:16px 12px 40px}.release{padding:15px}.release-head{align-items:flex-start;flex-direction:column}.top{align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><a class="back" href="index.html">← На головну</a><button class="theme" id="themeToggle" type="button">🌙 Тема</button></div>
+<header class="hero"><h1>📋 Change Log</h1><p>Історія оновлень і розвитку SomeStickers</p></header>
+<main class="timeline">
+<section class="release"><div class="release-head"><h2>Версія 0.15 — AI Optimization</h2><span class="tag">AI</span></div><ul><li>Додано кешування AI-моделі через IndexedDB.</li><li>Додано Service Worker.</li><li>Покращено повторне завантаження AI Assistant.</li><li>Додано відновлення роботи моделі після повторного відкриття сторінки.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.14 — AI Assistant</h2><span class="tag">AI</span></div><ul><li>Додано AI Assistant.</li><li>Інтегровано локальну AI-модель Gemma 3 1B.</li><li>Додано чат із ШІ прямо на сайті.</li><li>Додано збереження історії розмов.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.13 — Settings</h2><span class="tag">Налаштування</span></div><ul><li>Додано налаштування сайту.</li><li>Перемикання теми.</li><li>Налаштування карток і підписів.</li><li>Керування анімаціями та звуками.</li><li>Вибір початкової категорії.</li><li>Експорт та імпорт налаштувань.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.12 — Telegram Integration</h2><span class="tag">Telegram</span></div><ul><li>Додано підготовку наборів для Telegram.</li><li>Конвертація стікерів у WEBP 512×512.</li><li>Експорт наборів у ZIP.</li><li>Інструкція для завантаження через @Stickers.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.11 — Personal Account</h2><span class="tag">Профіль</span></div><ul><li>Додано особистий кабінет.</li><li>Мої стікери та мої набори.</li><li>Історія створення.</li><li>Налаштування профілю та аватара.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.10 — Catalog</h2><span class="tag">Каталог</span></div><ul><li>Додано каталог стікерів.</li><li>Додано пошук і категорії.</li><li>Додано обране.</li><li>Додано відображення власних наборів.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.9 — Sticker Sets</h2><span class="tag">Набори</span></div><ul><li>Додано створення власних наборів стікерів.</li><li>Можливість редагувати та видаляти набори.</li><li>Додавання обкладинок.</li><li>Експорт наборів у ZIP.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.8 — Sticker Editor</h2><span class="tag">Редактор</span></div><ul><li>Додано редактор власних стікерів.</li><li>Завантаження зображень PNG, JPG та WEBP.</li><li>Обрізання зображень.</li><li>Додавання тексту.</li><li>Налаштування рамок і фільтрів.</li><li>Видалення однотонного фону.</li><li>Експорт готових стікерів у PNG.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.7</h2><span class="tag">Покращення</span></div><ul><li>Додано вкладку «Нещодавні».</li><li>Додано ще більше смайликів.</li><li>Ще краще оптимізовано роботу сайту.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.6</h2><span class="tag">Пошук</span></div><ul><li>Додано пошук смайликів.</li><li>Додано кнопку додавання смайликів до улюблених.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.5</h2><span class="tag">Оптимізація</span></div><ul><li>Оптимізовано роботу сайту.</li><li>Зменшено навантаження від анімацій.</li><li>Виправлено лаги на слабких пристроях.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.4</h2><span class="tag">Анімації</span></div><ul><li>Додано анімації смайликів.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.3</h2><span class="tag">Категорії</span></div><ul><li>Додано категорії смайликів.</li><li>Значно збільшено кількість смайликів.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.2</h2><span class="tag">Колекція</span></div><ul><li>Додано ще 30 смайликів.</li><li>Загальна кількість — 40 смайликів.</li></ul></section>
+<section class="release"><div class="release-head"><h2>Версія 0.1</h2><span class="tag">Перший реліз</span></div><ul><li>Початкова версія SomeStickers.</li><li>Додано копіювання смайликів.</li><li>Усього 10 смайликів.</li></ul></section>
+</main>
+<footer class="footer">SomeStickers · Історія версій</footer>
+</div>
+<script>
+(()=>{let prefs={};try{prefs=JSON.parse(localStorage.getItem('SomeStickersSettings')||'{}')||{}}catch(_){};const saved=prefs.theme;const systemDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;let dark=saved==='dark'||(!saved&&systemDark);function apply(){document.body.setAttribute('data-theme',dark?'dark':'light');document.getElementById('themeToggle').textContent=dark?'☀️ Світла тема':'🌙 Темна тема'}apply();document.getElementById('themeToggle').addEventListener('click',()=>{dark=!dark;apply()})})();
+</script>
+</body>
+</html>
