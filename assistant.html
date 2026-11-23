@@ -77,7 +77,7 @@ $('chatForm').addEventListener('submit',async e=>{
  const thinking=addMessage('system','SomeStickers AI думає…',false);
  try{
   const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]').slice(-12).map(m=>({role:m.role==='bot'?'assistant':m.role,content:m.text}));
-  const response=await engine.chat.completions.create({messages:[{role:'system',content:siteKnowledge},{role:'user',content:'Відповідай українською. Допомагай користувачу з SomeStickers.\n\n'+value},...history.slice(0,-1)],temperature:0.7,max_tokens:450});
+  const response=await engine.chat.completions.create({messages:[{role:'system',content:siteKnowledge},...history.slice(0,-1),{role:'user',content:'Відповідай українською. Допомагай користувачу з SomeStickers.\n\n'+value}],temperature:0.7,max_tokens:450});
   thinking.remove();const answer=response.choices&&response.choices[0]&&response.choices[0].message?response.choices[0].message.content:'Не вдалося отримати відповідь.';addMessage('bot',answer);
  }catch(err){thinking.remove();addMessage('system','Помилка генерації: '+(err&&err.message?err.message:'спробуй ще раз'),false)}
  finally{busy=false;$('sendBtn').disabled=false;$('prompt').focus()}
