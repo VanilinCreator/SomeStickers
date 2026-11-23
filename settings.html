@@ -51,17 +51,17 @@ let prefs={...defaults};
 try{prefs={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){}
 const $=id=>document.getElementById(id);
 function status(message){$('status').textContent=message}
-function save(){localStorage.setItem(KEY,JSON.stringify(prefs));applyTheme();status('✓ Налаштування збережено');}
+function applyOptimization(){if(window.applySomeStickersOptimization)window.applySomeStickersOptimization()}\nfunction save(){localStorage.setItem(KEY,JSON.stringify(prefs));applyTheme();applyOptimization();status('✓ Налаштування збережено');}
 function applyTheme(){const t=prefs.theme==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):prefs.theme;document.documentElement.dataset.theme=t}
 function load(){Object.keys(defaults).forEach(k=>{const el=$(k);if(el.type==='checkbox')el.checked=!!prefs[k];else el.value=prefs[k]})}
 Object.keys(defaults).forEach(k=>$(k).addEventListener('change',e=>{prefs[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;save()}));
 $('export').onclick=()=>{const data={app:'SomeStickers',version:1,settings:prefs,favorites:JSON.parse(localStorage.getItem('emoji_favorites')||'[]'),recent:JSON.parse(localStorage.getItem('emoji_recent')||'[]')};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='somestickers-backup.json';a.click();URL.revokeObjectURL(a.href);status('Файл експорту підготовлено')};
 $('import').onclick=()=>$('importFile').click();
-$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(d.app!=='SomeStickers')throw Error();if(d.settings)prefs={...defaults,...d.settings};localStorage.setItem(KEY,JSON.stringify(prefs));if(Array.isArray(d.favorites))localStorage.setItem('emoji_favorites',JSON.stringify(d.favorites));if(Array.isArray(d.recent))localStorage.setItem('emoji_recent',JSON.stringify(d.recent));load();applyTheme();status('✓ Дані імпортовано')}catch(err){status('Не вдалося імпортувати: файл має неправильний формат')}e.target.value=''};
+$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(d.app!=='SomeStickers')throw Error();if(d.settings)prefs={...defaults,...d.settings};localStorage.setItem(KEY,JSON.stringify(prefs));if(Array.isArray(d.favorites))localStorage.setItem('emoji_favorites',JSON.stringify(d.favorites));if(Array.isArray(d.recent))localStorage.setItem('emoji_recent',JSON.stringify(d.recent));load();applyTheme();applyOptimization();status('✓ Дані імпортовано')}catch(err){status('Не вдалося імпортувати: файл має неправильний формат')}e.target.value=''};
 function clearKey(key,label){if(prefs.confirmClear&&!confirm('Точно '+label.toLowerCase()+'?'))return;localStorage.removeItem(key);status('✓ '+label+' очищено')}
 $('clearRecent').onclick=()=>clearKey('emoji_recent','Історію нещодавніх');
 $('clearFavorites').onclick=()=>clearKey('emoji_favorites','Обране');
-$('reset').onclick=()=>{if(!confirm('Скинути всі параметри SomeStickers?'))return;prefs={...defaults};localStorage.setItem(KEY,JSON.stringify(prefs));load();applyTheme();status('Параметри скинуто')};
+$('reset').onclick=()=>{if(!confirm('Скинути всі параметри SomeStickers?'))return;prefs={...defaults};localStorage.setItem(KEY,JSON.stringify(prefs));load();applyTheme();applyOptimization();status('Параметри скинуто')};
 load();applyTheme();
 </script>
 <script src="optimization.js"></script>
