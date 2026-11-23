@@ -25,4 +25,5 @@ $('saveProfile').onclick=()=>{profile.name=$('profileName').value.trim();profile
 $('profileAvatar').onchange=e=>{const f=e.target.files[0];if(!f)return;if(!/^image\/(png|jpeg|webp)$/.test(f.type)){say('Непідтримуваний формат аватара.');return}if(f.size>3*1024*1024){say('Аватар має бути не більшим за 3 МБ.');return}const r=new FileReader();r.onload=()=>{profile.avatar=r.result;paintProfile();say('Аватар готовий. Натисни «Зберегти налаштування».')};r.readAsDataURL(f)};
 $('clearProfile').onclick=()=>{if(!confirm('Скинути ім’я, опис та аватар профілю? Стікери й набори не буде видалено.'))return;profile={};localStorage.removeItem('SomeStickersProfile');paintProfile();say('Профіль скинуто.')};
 (async()=>{try{db=await openDB();paintProfile();await Promise.all([renderStickers(),renderSets(),renderHistory()])}catch(e){say('Не вдалося відкрити локальне сховище браузера.')}})();
-</script></body></html>
+</script><script src="optimization.js"></script>
+</body></html>
