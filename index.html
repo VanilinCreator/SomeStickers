@@ -501,6 +501,7 @@
         <div class="top-actions">
             <button class="icon-btn" id="soundBtn" title="Звуковий відгук: Увімкнено">🔊</button>
             <button class="icon-btn" id="themeBtn" title="Змінити тему">🌙</button>
+            <a class="icon-btn settings-shortcut" href="settings.html" title="Налаштування" aria-label="Налаштування" style="text-decoration:none">⚙️</a>
             <div class="site-menu" id="siteMenu">
       <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-label="Відкрити меню" aria-expanded="false" aria-controls="siteMenuPanel">⋮</button>
       <nav class="site-menu-panel" id="siteMenuPanel" aria-label="Основна навігація" hidden>
@@ -997,6 +998,34 @@
           if (event.key === 'Escape') { closeMenu(); toggle.focus(); }
         });
         panel.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+      })();
+    </script>
+
+
+    <style>
+      body.no-motion *, body.no-motion *::before, body.no-motion *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+      body.cards-compact .grid{grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:9px}
+      body.cards-large .grid{grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:18px}
+      body.hide-emoji-names .emoji-name{display:none}
+    </style>
+    <script>
+      (() => {
+        let prefs = {};
+        try { prefs = JSON.parse(localStorage.getItem('SomeStickersSettings') || '{}') || {}; } catch (_) {}
+        if (prefs.theme === 'dark' || prefs.theme === 'light') {
+          document.body.setAttribute('data-theme', prefs.theme);
+          const themeButton = document.getElementById('themeBtn');
+          if (themeButton) themeButton.textContent = prefs.theme === 'light' ? '🌙' : '☀️';
+        }
+        if (prefs.motion === false) document.body.classList.add('no-motion');
+        if (prefs.cardSize === 'compact') document.body.classList.add('cards-compact');
+        if (prefs.cardSize === 'large') document.body.classList.add('cards-large');
+        if (prefs.showNames === false) document.body.classList.add('hide-emoji-names');
+        if (prefs.sound === false && typeof soundEnabled !== 'undefined') {
+          soundEnabled = false;
+          const soundButton = document.getElementById('soundBtn');
+          if (soundButton) { soundButton.textContent = '🔇'; soundButton.title = 'Звуковий відгук: Вимкнено'; }
+        }
       })();
     </script>
 
