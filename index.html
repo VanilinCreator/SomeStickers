@@ -1053,5 +1053,6 @@
 (()=>{const key='SomeStickersAIWelcomeSeen';if(localStorage.getItem(key))return;const modal=document.getElementById('aiWelcome');if(!modal)return;modal.classList.add('show');document.getElementById('aiWelcomeLater').addEventListener('click',()=>{localStorage.setItem(key,'1');modal.classList.remove('show')});document.getElementById('aiWelcomeGo').addEventListener('click',()=>localStorage.setItem(key,'1'));})();
 </script>
 
+<script src="optimization.js"></script>
 </body>
 </html>
