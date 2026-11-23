@@ -64,8 +64,12 @@ async function startAI(){
  if(!('gpu' in navigator)){setStatus('Цей браузер не підтримує WebGPU. Спробуй актуальний Chrome або Edge на пристрої з підтримкою WebGPU.');return}
  loading=true;$('loadBtn').disabled=true;$('loadBtn').textContent='Завантаження…';
  try{
-  const {CreateMLCEngine}=await import('https://esm.run/@mlc-ai/web-llm');
-  engine=await CreateMLCEngine(MODEL_ID,{initProgressCallback:p=>{const pct=Math.max(0,Math.min(100,Math.round((p.progress||0)*100)));$('progressBar').style.width=pct+'%';setStatus(p.text||('Підготовка моделі: '+pct+'%'))}});
+  const {CreateMLCEngine,prebuiltAppConfig}=await import('https://esm.run/@mlc-ai/web-llm');
+  // IndexedDB зберігає файли моделі між перезавантаженнями сторінки.
+  // Просимо браузер не видаляти сховище автоматично, якщо це підтримується.
+  if(navigator.storage&&navigator.storage.persist){try{await navigator.storage.persist()}catch(storageError){console.warn('Не вдалося закріпити сховище:',storageError)}}
+  const appConfig={...prebuiltAppConfig,cacheBackend:'indexeddb'};
+  engine=await CreateMLCEngine(MODEL_ID,{appConfig,initProgressCallback:p=>{const pct=Math.max(0,Math.min(100,Math.round((p.progress||0)*100)));$('progressBar').style.width=pct+'%';setStatus(p.text||('Підготовка моделі: '+pct+'%'))}});
   localStorage.setItem(STORE_KEY,'accepted');$('progressBar').style.width='100%';setStatus('✓ Модель готова. Можна спілкуватися.');setReady();restoreHistory();
  }catch(err){engine=null;setStatus('Не вдалося запустити модель: '+(err&&err.message?err.message:'невідома помилка')+'. Перевір інтернет, WebGPU та вільну пам’ять пристрою.');$('loadBtn').disabled=false;$('loadBtn').textContent='Спробувати ще раз'}
  finally{loading=false}
@@ -84,7 +88,11 @@ $('chatForm').addEventListener('submit',async e=>{
 });
 $('quickPrompts').addEventListener('click',e=>{if(e.target.tagName==='BUTTON'){$('prompt').value=e.target.textContent;$('prompt').focus()}});
 $('clearBtn').addEventListener('click',()=>{if(!confirm('Очистити локальну історію чату?'))return;localStorage.removeItem(HISTORY_KEY);$('messages').innerHTML='<div class="msg system">Історію очищено.</div>'});
-if(localStorage.getItem(STORE_KEY)==='accepted'){setStatus('Ти вже погодився на завантаження раніше. Натисни кнопку, щоб відновити модель із кешу браузера.')}
+if(localStorage.getItem(STORE_KEY)==='accepted'){
+ setStatus('Знайдено попередній запуск. Перевіряю локальний кеш моделі…');
+ $('loadBtn').textContent='Відновити AI з кешу';
+ startAI();
+}
 </script>
 </body>
 </html>
