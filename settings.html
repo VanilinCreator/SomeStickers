@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Налаштування — SomeStickers</title>
+<style>
+:root{color-scheme:light;--bg:#eef2ff;--panel:rgba(255,255,255,.88);--text:#172033;--muted:#64748b;--line:#dbe3f0;--accent:#4f46e5;--accent2:#7c3aed;--danger:#dc2626}
+[data-theme="dark"]{color-scheme:dark;--bg:#080f20;--panel:rgba(20,30,51,.92);--text:#f1f5f9;--muted:#a8b4c8;--line:#34425a;--accent:#818cf8;--accent2:#a78bfa;--danger:#f87171}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:24px;font-family:system-ui,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at 10% 0%,#c7d2fe 0,transparent 35%),radial-gradient(circle at 90% 10%,#f5d0fe 0,transparent 30%),var(--bg);transition:.2s}
+[data-theme="dark"] body{background:radial-gradient(circle at 10% 0%,#25265c 0,transparent 35%),radial-gradient(circle at 90% 10%,#42204e 0,transparent 30%),var(--bg)}
+.wrap{max-width:960px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:24px}.top h1{margin:0;font-size:clamp(25px,4vw,36px)}.back{color:var(--accent);font-weight:700;text-decoration:none}
+.intro{color:var(--muted);margin:7px 0 0}.section{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:20px;margin:15px 0;backdrop-filter:blur(15px);box-shadow:0 10px 30px #0f172a0b}
+.section h2{font-size:18px;margin:0 0 5px}.hint{color:var(--muted);font-size:13px;margin:0 0 14px}.setting{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px 0;border-top:1px solid var(--line)}.setting:first-of-type{border-top:0}.setting strong{display:block;font-size:14px}.setting small{display:block;color:var(--muted);margin-top:3px;line-height:1.4}
+select,button{font:inherit}select{max-width:48%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text)}
+.switch{appearance:none;width:46px;height:26px;border-radius:99px;background:#94a3b8;position:relative;cursor:pointer;flex:none;transition:.2s}.switch:checked{background:var(--accent)}.switch:before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;border-radius:50%;background:white;transition:.2s}.switch:checked:before{transform:translateX(20px)}
+.actions{display:flex;flex-wrap:wrap;gap:10px}.btn{border:0;border-radius:11px;padding:11px 15px;background:var(--accent);color:white;font-weight:700;cursor:pointer}.btn.secondary{background:var(--line);color:var(--text)}.btn.danger{background:var(--danger)}.status{color:var(--muted);font-size:13px;min-height:20px;margin-top:10px}
+@media(max-width:600px){body{padding:15px}.section{padding:16px}.setting{align-items:flex-start}.setting select{max-width:46%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div><h1>⚙️ Налаштування</h1><p class="intro">Налаштуй SomeStickers під себе. Зміни зберігаються в цьому браузері.</p></div><a class="back" href="index.html">← На головну</a></header>
+<section class="section"><h2>🎨 Зовнішній вигляд</h2><p class="hint">Тема, розмір карток та ефекти інтерфейсу.</p>
+<label class="setting"><span><strong>Тема оформлення</strong><small>Світла або темна тема сайту</small></span><select id="theme"><option value="system">Як у системі</option><option value="light">Світла</option><option value="dark">Темна</option></select></label>
+<label class="setting"><span><strong>Розмір карток</strong><small>Скільки емодзі поміщається в ряд</small></span><select id="cardSize"><option value="compact">Компактний</option><option value="normal">Звичайний</option><option value="large">Великий</option></select></label>
+<label class="setting"><span><strong>Показувати назви емодзі</strong><small>Підпис під кожним емодзі</small></span><input class="switch" type="checkbox" id="showNames"></label>
+<label class="setting"><span><strong>Анімації інтерфейсу</strong><small>Плавні переходи та рух карток</small></span><input class="switch" type="checkbox" id="motion"></label>
+</section>
+<section class="section"><h2>🔊 Звук та взаємодія</h2><p class="hint">Керування відгуком під час натискання.</p>
+<label class="setting"><span><strong>Звуковий відгук</strong><small>Короткий звук під час дій</small></span><input class="switch" type="checkbox" id="sound"></label>
+</section>
+<section class="section"><h2>🔎 Пошук і зручність</h2><p class="hint">Параметри роботи з колекцією.</p>
+<label class="setting"><span><strong>Стартова категорія</strong><small>Яку категорію показувати при відкритті</small></span><select id="startCategory"><option value="all">🌈 Всі</option><option value="favorites">⭐ Обране</option><option value="recent">🕒 Нещодавні</option></select></label>
+<label class="setting"><span><strong>Підтвердження очищення</strong><small>Запитувати підтвердження перед видаленням локальних даних</small></span><input class="switch" type="checkbox" id="confirmClear"></label>
+</section>
+<section class="section"><h2>💾 Дані та приватність</h2><p class="hint">Дані SomeStickers зберігаються локально у сховищі браузера. Вони не синхронізуються між пристроями.</p>
+<div class="actions"><button class="btn" id="export">⬇️ Експортувати налаштування й обране</button><button class="btn secondary" id="import">⬆️ Імпортувати файл</button><input type="file" id="importFile" accept="application/json,.json" hidden></div>
+<div class="setting"><span><strong>Очистити нещодавні</strong><small>Видалити історію нещодавно скопійованих емодзі</small></span><button class="btn secondary" id="clearRecent">Очистити</button></div>
+<div class="setting"><span><strong>Очистити обране</strong><small>Прибрати всі збережені улюблені емодзі</small></span><button class="btn secondary" id="clearFavorites">Очистити</button></div>
+<div class="setting"><span><strong>Скинути налаштування</strong><small>Повернути початкові параметри цієї сторінки</small></span><button class="btn danger" id="reset">Скинути</button></div>
+<div class="status" id="status" role="status" aria-live="polite"></div>
+</section>
+</div>
+<script>
+const KEY='SomeStickersSettings';
+const defaults={theme:'system',cardSize:'normal',showNames:true,motion:true,sound:true,startCategory:'all',confirmClear:true};
+let prefs={...defaults};
+try{prefs={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){}
+const $=id=>document.getElementById(id);
+function status(message){$('status').textContent=message}
+function save(){localStorage.setItem(KEY,JSON.stringify(prefs));applyTheme();status('✓ Налаштування збережено');}
+function applyTheme(){const t=prefs.theme==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):prefs.theme;document.documentElement.dataset.theme=t}
+function load(){Object.keys(defaults).forEach(k=>{const el=$(k);if(el.type==='checkbox')el.checked=!!prefs[k];else el.value=prefs[k]})}
+Object.keys(defaults).forEach(k=>$(k).addEventListener('change',e=>{prefs[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;save()}));
+$('export').onclick=()=>{const data={app:'SomeStickers',version:1,settings:prefs,favorites:JSON.parse(localStorage.getItem('emoji_favorites')||'[]'),recent:JSON.parse(localStorage.getItem('emoji_recent')||'[]')};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='somestickers-backup.json';a.click();URL.revokeObjectURL(a.href);status('Файл експорту підготовлено')};
+$('import').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(d.app!=='SomeStickers')throw Error();if(d.settings)prefs={...defaults,...d.settings};localStorage.setItem(KEY,JSON.stringify(prefs));if(Array.isArray(d.favorites))localStorage.setItem('emoji_favorites',JSON.stringify(d.favorites));if(Array.isArray(d.recent))localStorage.setItem('emoji_recent',JSON.stringify(d.recent));load();applyTheme();status('✓ Дані імпортовано')}catch(err){status('Не вдалося імпортувати: файл має неправильний формат')}e.target.value=''};
+function clearKey(key,label){if(prefs.confirmClear&&!confirm('Точно '+label.toLowerCase()+'?'))return;localStorage.removeItem(key);status('✓ '+label+' очищено')}
+$('clearRecent').onclick=()=>clearKey('emoji_recent','Історію нещодавніх');
+$('clearFavorites').onclick=()=>clearKey('emoji_favorites','Обране');
+$('reset').onclick=()=>{if(!confirm('Скинути всі параметри SomeStickers?'))return;prefs={...defaults};localStorage.setItem(KEY,JSON.stringify(prefs));load();applyTheme();status('Параметри скинуто')};
+load();applyTheme();
+</script>
+</body></html>
