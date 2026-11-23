@@ -32,4 +32,5 @@ $('saveLink').onclick=()=>{const v=$('packLink').value.trim();if(!validLink(v)){
 $('copyLink').onclick=async()=>{const v=$('packLink').value.trim();try{await navigator.clipboard.writeText(v);$('linkStatus').textContent='Посилання скопійовано.'}catch{$('linkStatus').textContent='Не вдалося скопіювати автоматично. Виділи посилання та скопіюй вручну.'}};
 $('shareLink').onclick=async()=>{const v=$('packLink').value.trim();if(navigator.share){try{await navigator.share({title:'Мій набір стікерів у Telegram',url:v})}catch(e){if(e.name!=='AbortError')$('linkStatus').textContent='Не вдалося відкрити меню поширення.'}}else{try{await navigator.clipboard.writeText(v);$('linkStatus').textContent='Меню поширення не підтримується — посилання скопійовано.'}catch{$('linkStatus').textContent='Скопіюй посилання вручну.'}}};
 (async()=>{try{db=await openDB();sets=await getSets();renderSelect();$('setSelect').value='';selectSet()}catch(e){status('Не вдалося прочитати набори. Відкрий SomeStickers через той самий браузер, де вони були створені.')}})();
-</script></body></html>
+</script><script src="optimization.js"></script>
+</body></html>
