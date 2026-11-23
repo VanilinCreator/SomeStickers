@@ -25,6 +25,7 @@ ul{margin:0;padding-left:20px;line-height:1.7}li{padding-left:2px}.footer{text-a
 <div class="top"><a class="back" href="index.html">← На головну</a><button class="theme" id="themeToggle" type="button">🌙 Тема</button></div>
 <header class="hero"><h1>📋 Change Log</h1><p>Історія оновлень і розвитку SomeStickers</p></header>
 <main class="timeline">
+<section class="release"><div class="release-head"><h2>Версія 0.20 — Side Navigation</h2><span class="tag">Навігація</span></div><ul><li>Додано бокове меню, яке виїжджає зліва.</li><li>Додано кнопку з трьома горизонтальними рисками у верхньому лівому куті.</li><li>Зібрано всі розділи сайту в одному меню.</li><li>Додано затемнення фону та закриття меню кнопкою, кліком поза ним або клавішею Escape.</li></ul></section>
 <section class="release"><div class="release-head"><h2>Версія 0.19 — Settings Cleanup</h2><span class="tag">Зміни</span></div><ul><li>Прибрано окремий блок Change Log зі сторінки налаштувань.</li></ul></section>
 
 <section class="release"><div class="release-head"><h2>Версія 0.18 — Change Log Shortcut</h2><span class="tag">Навігація</span></div><ul><li>Додано окремий пункт Change Log у налаштуваннях.</li><li>Додано пряме посилання на історію версій із налаштувань.</li></ul></section>
@@ -54,6 +55,7 @@ ul{margin:0;padding-left:20px;line-height:1.7}li{padding-left:2px}.footer{text-a
 <script>
 (()=>{let prefs={};try{prefs=JSON.parse(localStorage.getItem('SomeStickersSettings')||'{}')||{}}catch(_){};const saved=prefs.theme;const systemDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;let dark=saved==='dark'||(!saved&&systemDark);function apply(){document.body.setAttribute('data-theme',dark?'dark':'light');document.getElementById('themeToggle').textContent=dark?'☀️ Світла тема':'🌙 Темна тема'}apply();document.getElementById('themeToggle').addEventListener('click',()=>{dark=!dark;apply()})})();
 </script>
+<script src="navigation.js"></script>
 <script src="optimization.js"></script>
 </body>
 </html>
