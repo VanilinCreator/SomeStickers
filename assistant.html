@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>SomeStickers AI</title>
+<style>
+:root{color-scheme:light;--bg:#eef2ff;--panel:rgba(255,255,255,.92);--text:#172033;--muted:#64748b;--line:#dbe3f0;--accent:#4f46e5;--accent2:#7c3aed;--user:#e0e7ff;--bot:#f1f5f9}
+[data-theme=dark]{color-scheme:dark;--bg:#080f20;--panel:rgba(20,30,51,.94);--text:#f1f5f9;--muted:#a8b4c8;--line:#34425a;--accent:#818cf8;--accent2:#a78bfa;--user:#292d58;--bot:#1e293b}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:22px;font-family:system-ui,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at 10% 0%,#c7d2fe 0,transparent 34%),radial-gradient(circle at 90% 8%,#f5d0fe 0,transparent 28%),var(--bg)}
+[data-theme=dark] body{background:radial-gradient(circle at 10% 0%,#25265c 0,transparent 34%),radial-gradient(circle at 90% 8%,#42204e 0,transparent 28%),var(--bg)}
+.wrap{max-width:920px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.top h1{margin:0;font-size:clamp(24px,4vw,34px)}a{color:var(--accent);font-weight:700;text-decoration:none}.sub{color:var(--muted);margin:5px 0 0;font-size:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 12px 35px #0f172a12;backdrop-filter:blur(14px)}
+.setup{margin-bottom:16px}.setup h2{margin:0 0 7px;font-size:19px}.setup p{color:var(--muted);line-height:1.55;margin:6px 0 13px}
+.model-info{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px;border:1px solid var(--line);border-radius:13px;background:var(--bot);margin:12px 0}
+.model-info strong{display:block}.model-info small{color:var(--muted)}.btn{border:0;border-radius:11px;padding:11px 16px;background:var(--accent);color:#fff;font:inherit;font-weight:750;cursor:pointer}.btn:disabled{opacity:.55;cursor:not-allowed}.btn.alt{background:var(--line);color:var(--text)}.btn.danger{background:#dc2626}
+.progress{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:12px 0 7px}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .2s}
+.status{font-size:13px;color:var(--muted);min-height:20px}.warning{font-size:13px;color:var(--muted);line-height:1.5}
+.chat{display:flex;flex-direction:column;min-height:55vh}.chat-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line)}.chat-head h2{margin:0;font-size:18px}.messages{flex:1;display:flex;flex-direction:column;gap:12px;padding:16px 2px;overflow:auto;max-height:55vh}
+.msg{max-width:88%;padding:12px 14px;border-radius:15px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.msg.user{align-self:flex-end;background:var(--user)}.msg.bot{align-self:flex-start;background:var(--bot);border:1px solid var(--line)}.msg.system{align-self:center;color:var(--muted);font-size:13px;text-align:center}
+.composer{display:flex;gap:9px;border-top:1px solid var(--line);padding-top:13px}.composer textarea{flex:1;resize:vertical;min-height:48px;max-height:150px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bot);color:var(--text);font:inherit;outline:none}.composer textarea:focus{border-color:var(--accent)}
+.quick{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.quick button{border:1px solid var(--line);border-radius:99px;padding:8px 11px;background:var(--bot);color:var(--text);cursor:pointer}
+.hidden{display:none!important}
+@media(max-width:620px){body{padding:13px}.panel{padding:14px}.top{align-items:flex-start}.composer{flex-direction:column}.composer .btn{width:100%}.msg{max-width:96%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div><h1>🤖 SomeStickers AI</h1><p class="sub">Локальний AI-помічник — відповіді генеруються на твоєму пристрої</p></div><a href="index.html">← На головну</a></header>
+
+<section class="panel setup" id="setupPanel">
+<h2>Підготовка AI-помічника</h2>
+<p>Для першого запуску потрібно завантажити мовну модель. Після завантаження браузер зможе зберігати її кеш і повторно використовувати без повного завантаження щоразу.</p>
+<div class="model-info"><div><strong>Gemma 3 1B · WebLLM</strong><small>Орієнтовний розмір: 711 МБ · контекст до 4K</small></div><span>🇺🇦</span></div>
+<p class="warning">Модель і її технічні файли завантажуються з мережі. Це не секретний файл і не приховане завантаження: назву та приблизний розмір показано тут. Потрібен сучасний браузер із WebGPU. Швидкість залежить від пристрою та інтернету.</p>
+<button class="btn" id="loadBtn">Завантажити та запустити AI</button>
+<div class="progress" aria-label="Прогрес завантаження"><div class="bar" id="progressBar"></div></div>
+<div class="status" id="loadStatus" role="status" aria-live="polite">AI ще не завантажено.</div>
+</section>
+
+<section class="panel chat" id="chatPanel">
+<div class="chat-head"><h2>Чат із помічником</h2><button class="btn alt" id="clearBtn" type="button">Очистити чат</button></div>
+<div class="quick" id="quickPrompts">
+<button type="button">Як створити стікер?</button><button type="button">Як підготувати набір для Telegram?</button><button type="button">Придумай назву набору</button>
+</div>
+<div class="messages" id="messages" aria-live="polite"><div class="msg system">Спочатку завантаж AI-модель у блоці вище. Перше завантаження може тривати кілька хвилин.</div></div>
+<form class="composer" id="chatForm"><textarea id="prompt" placeholder="Напиши повідомлення..." rows="2" disabled></textarea><button class="btn" id="sendBtn" disabled>Надіслати</button></form>
+</section>
+</div>
+<script type="module">
+const MODEL_ID='gemma3-1b-it-q4f16_1-MLC';
+const STORE_KEY='SomeStickersAIConsent';
+const HISTORY_KEY='SomeStickersAIHistory';
+const $=id=>document.getElementById(id);
+let engine=null,loading=false,busy=false;
+const siteKnowledge='SomeStickers — сайт для роботи зі стікерами та емодзі. Основні розділи: головна колекція емодзі; редактор стікерів sticker-editor.html (завантаження зображення, обрізання, текст, фільтри, PNG експорт); набори sticker-sets.html (створення наборів та ZIP експорт); каталог catalog.html (локальний демо-каталог); особистий кабінет account.html (локальні дані браузера); Telegram telegram.html (підготовка файлів для ручного завантаження через офіційний @Stickers); налаштування settings.html. Не стверджуй, що сайт має серверну синхронізацію, автоматичне завантаження в Telegram або онлайн-каталог, бо це не так. Відповідай українською, пояснюй простими кроками. Якщо не знаєш — чесно скажи.';
+function setStatus(s){$('loadStatus').textContent=s}
+function addMessage(role,text,save=true){const el=document.createElement('div');el.className='msg '+role;el.textContent=text;$('messages').appendChild(el);$('messages').scrollTop=$('messages').scrollHeight;if(save&&role!=='system'){const h=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');h.push({role,text});localStorage.setItem(HISTORY_KEY,JSON.stringify(h.slice(-40)))}return el}
+function setReady(){ $('prompt').disabled=false;$('sendBtn').disabled=false;$('loadBtn').disabled=true;$('loadBtn').textContent='AI запущено';$('chatPanel').scrollIntoView({behavior:'smooth',block:'start'}); }
+function restoreHistory(){try{const h=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');if(h.length){$('messages').innerHTML='';h.forEach(m=>addMessage(m.role,m.text,false));}}catch(e){}}
+async function startAI(){
+ if(loading||engine)return;
+ if(!('gpu' in navigator)){setStatus('Цей браузер не підтримує WebGPU. Спробуй актуальний Chrome або Edge на пристрої з підтримкою WebGPU.');return}
+ loading=true;$('loadBtn').disabled=true;$('loadBtn').textContent='Завантаження…';
+ try{
+  const {CreateMLCEngine}=await import('https://esm.run/@mlc-ai/web-llm');
+  engine=await CreateMLCEngine(MODEL_ID,{initProgressCallback:p=>{const pct=Math.max(0,Math.min(100,Math.round((p.progress||0)*100)));$('progressBar').style.width=pct+'%';setStatus(p.text||('Підготовка моделі: '+pct+'%'))}});
+  localStorage.setItem(STORE_KEY,'accepted');$('progressBar').style.width='100%';setStatus('✓ Модель готова. Можна спілкуватися.');setReady();restoreHistory();
+ }catch(err){engine=null;setStatus('Не вдалося запустити модель: '+(err&&err.message?err.message:'невідома помилка')+'. Перевір інтернет, WebGPU та вільну пам’ять пристрою.');$('loadBtn').disabled=false;$('loadBtn').textContent='Спробувати ще раз'}
+ finally{loading=false}
+}
+$('loadBtn').addEventListener('click',startAI);
+$('chatForm').addEventListener('submit',async e=>{
+ e.preventDefault();const value=$('prompt').value.trim();if(!value||!engine||busy)return;
+ busy=true;$('prompt').value='';$('sendBtn').disabled=true;addMessage('user',value);
+ const thinking=addMessage('system','SomeStickers AI думає…',false);
+ try{
+  const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]').slice(-12).map(m=>({role:m.role==='bot'?'assistant':m.role,content:m.text}));
+  const response=await engine.chat.completions.create({messages:[{role:'system',content:siteKnowledge},{role:'user',content:'Відповідай українською. Допомагай користувачу з SomeStickers.\n\n'+value},...history.slice(0,-1)],temperature:0.7,max_tokens:450});
+  thinking.remove();const answer=response.choices&&response.choices[0]&&response.choices[0].message?response.choices[0].message.content:'Не вдалося отримати відповідь.';addMessage('bot',answer);
+ }catch(err){thinking.remove();addMessage('system','Помилка генерації: '+(err&&err.message?err.message:'спробуй ще раз'),false)}
+ finally{busy=false;$('sendBtn').disabled=false;$('prompt').focus()}
+});
+$('quickPrompts').addEventListener('click',e=>{if(e.target.tagName==='BUTTON'){$('prompt').value=e.target.textContent;$('prompt').focus()}});
+$('clearBtn').addEventListener('click',()=>{if(!confirm('Очистити локальну історію чату?'))return;localStorage.removeItem(HISTORY_KEY);$('messages').innerHTML='<div class="msg system">Історію очищено.</div>'});
+if(localStorage.getItem(STORE_KEY)==='accepted'){setStatus('Ти вже погодився на завантаження раніше. Натисни кнопку, щоб відновити модель із кешу браузера.')}
+</script>
+</body>
+</html>
