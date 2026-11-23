@@ -65,5 +65,6 @@ $('clearFavorites').onclick=()=>clearKey('emoji_favorites','Обране');
 $('reset').onclick=()=>{if(!confirm('Скинути всі параметри SomeStickers?'))return;prefs={...defaults};localStorage.setItem(KEY,JSON.stringify(prefs));load();applyTheme();applyOptimization();status('Параметри скинуто')};
 load();applyTheme();
 </script>
+<script src="navigation.js"></script>
 <script src="optimization.js"></script>
 </body></html>
