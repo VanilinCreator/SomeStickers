@@ -60,5 +60,6 @@ async function saveToAccount(data,name){return new Promise((resolve,reject)=>{co
 $('export').onclick=async()=>{if(!canvas.width||!canvas.height){say('Немає зображення для експорту.');return}const data=canvas.toDataURL('image/png'),name=(prompt('Назва стікера:','Мій стікер')||'Мій стікер').trim()||'Мій стікер';const a=document.createElement('a');a.download='somestickers-sticker.png';a.href=data;a.click();try{await saveToAccount(data,name);say('PNG підготовлено та стікер збережено в особистому кабінеті.')}catch(e){say('PNG підготовлено, але зберегти стікер у кабінеті не вдалося. Перевір місце у браузері.')}};
 ctx.fillStyle='#8292b4';ctx.font='18px system-ui';ctx.textAlign='center';ctx.fillText('Завантаж зображення, щоб почати',256,256);
 </script>
+<script src="navigation.js"></script>
 <script src="optimization.js"></script>
 </body></html>
