@@ -59,7 +59,7 @@ const siteKnowledge='SomeStickers — сайт для роботи зі стік
 function setStatus(s){$('loadStatus').textContent=s}
 function readChatHistory(){try{const value=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');return Array.isArray(value)?value.filter(m=>m&&typeof m==='object'&&typeof m.text==='string'&&['user','bot'].includes(m.role)):[]}catch(e){return []}}\nfunction addMessage(role,text,save=true){const el=document.createElement('div');el.className='msg '+(role==='user'?'user':role==='bot'?'bot':'system');el.textContent=String(text??'');$('messages').appendChild(el);$('messages').scrollTop=$('messages').scrollHeight;if(save&&role!=='system'){const h=readChatHistory();h.push({role,text:String(text??'')});try{localStorage.setItem(HISTORY_KEY,JSON.stringify(h.slice(-40)))}catch(e){setStatus('Не вдалося зберегти історію чату: недостатньо місця у сховищі.')}}return el}
 function setReady(){ $('prompt').disabled=false;$('sendBtn').disabled=false;$('loadBtn').disabled=true;$('loadBtn').textContent='AI запущено';$('chatPanel').scrollIntoView({behavior:'smooth',block:'start'}); }
-function restoreHistory(){try{const h=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');if(h.length){$('messages').innerHTML='';h.forEach(m=>addMessage(m.role,m.text,false));}}catch(e){}}
+function restoreHistory(){const h=readChatHistory();if(h.length){$('messages').innerHTML='';h.forEach(m=>addMessage(m.role,m.text,false));}}
 async function startAI(){
  if(loading||engine)return;
  if(!('gpu' in navigator)){setStatus('Цей браузер не підтримує WebGPU. Спробуй актуальний Chrome або Edge на пристрої з підтримкою WebGPU.');return}
@@ -118,7 +118,7 @@ $('chatForm').addEventListener('submit',async e=>{
  busy=true;$('prompt').value='';$('sendBtn').disabled=true;addMessage('user',value);
  const thinking=addMessage('system','SomeStickers AI думає…',false);
  try{
-  const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]').slice(-12).map(m=>({role:m.role==='bot'?'assistant':m.role,content:m.text}));
+  const history=readChatHistory().slice(-12).map(m=>({role:m.role==='bot'?'assistant':m.role,content:m.text}));
   const response=await engine.chat.completions.create({messages:[{role:'system',content:siteKnowledge},...history.slice(0,-1),{role:'user',content:'Відповідай українською. Допомагай користувачу з SomeStickers.\n\n'+value}],temperature:0.7,max_tokens:450});
   thinking.remove();const answer=response.choices&&response.choices[0]&&response.choices[0].message?response.choices[0].message.content:'Не вдалося отримати відповідь.';addMessage('bot',answer);
  }catch(err){thinking.remove();addMessage('system','Помилка генерації: '+(err&&err.message?err.message:'спробуй ще раз'),false)}
