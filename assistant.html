@@ -42,10 +42,16 @@
 </section>
 
 <section class="panel chat" id="chatPanel">
-<div class="chat-head"><h2>Чат із помічником</h2><button class="btn alt" id="clearBtn" type="button">Очистити чат</button></div>
+<div class="chat-head"><h2>Чат із помічником</h2><div><button class="btn alt" id="exportChatBtn" type="button">Експорт діалогу</button> <button class="btn alt" id="clearBtn" type="button">Очистити чат</button></div></div>
+<section class="panel" style="margin-bottom:16px"><div class="chat-head"><h2>🧰 AI Tools</h2><span class="sub">Швидкі творчі інструменти</span></div>
 <div class="quick" id="quickPrompts">
-<button type="button">Як створити стікер?</button><button type="button">Як підготувати набір для Telegram?</button><button type="button">Придумай назву набору</button>
-</div>
+<button type="button" data-prompt="Допоможи придумати 10 оригінальних назв для набору стікерів. Дай короткі пояснення до назв.">✨ Назви набору</button>
+<button type="button" data-prompt="Запропонуй концепцію нового набору стікерів: тема, стиль, палітра та 12 ідей стікерів.">💡 Ідея набору</button>
+<button type="button" data-prompt="Напиши короткий і привабливий опис для набору стікерів. Спочатку запитай тему, якщо її не вказано.">📝 Опис набору</button>
+<button type="button" data-prompt="Запропонуй 10 коротких фраз українською для стікерів у дружньому гумористичному стилі.">💬 Фрази для стікерів</button>
+<button type="button" data-prompt="Допоможи покращити мій задум стікера: постав уточнювальні запитання та запропонуй кілька варіантів.">🎨 Покращити задум</button>
+<button type="button" data-prompt="Поясни покроково, як підготувати набір стікерів для Telegram через SomeStickers.">📦 Інструкція Telegram</button>
+</div></section>
 <div class="messages" id="messages" aria-live="polite"><div class="msg system">Спочатку завантаж AI-модель у блоці вище. Перше завантаження може тривати кілька хвилин.</div></div>
 <form class="composer" id="chatForm"><textarea id="prompt" placeholder="Напиши повідомлення..." rows="2" disabled></textarea><button class="btn" id="sendBtn" disabled>Надіслати</button></form>
 </section>
@@ -126,7 +132,8 @@ $('chatForm').addEventListener('submit',async e=>{
  }catch(err){thinking.remove();addMessage('system','Помилка генерації: '+(err&&err.message?err.message:'спробуй ще раз'),false)}
  finally{busy=false;$('sendBtn').disabled=false;$('prompt').focus()}
 });
-$('quickPrompts').addEventListener('click',e=>{if(e.target.tagName==='BUTTON'){$('prompt').value=e.target.textContent;$('prompt').focus()}});
+$('quickPrompts').addEventListener('click',e=>{const button=e.target.closest('button');if(button){$('prompt').value=button.dataset.prompt||button.textContent;$('prompt').focus()}});
+$('exportChatBtn').addEventListener('click',()=>{const history=readChatHistory();if(!history.length){setStatus('Історія поки порожня — експортувати нічого.');return}const text=history.map(m=>(m.role==='user'?'Ти':'SomeStickers AI')+':\\n'+m.text).join('\\n\\n');const blob=new Blob([text],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='somestickers-ai-chat-'+new Date().toISOString().slice(0,10)+'.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setStatus('Діалог експортовано у TXT.')});
 $('clearBtn').addEventListener('click',()=>{if(!confirm('Очистити локальну історію чату?'))return;localStorage.removeItem(HISTORY_KEY);$('messages').innerHTML='<div class="msg system">Історію очищено.</div>'});
 if(localStorage.getItem(STORE_KEY)==='accepted'){
  setStatus('Знайдено попередній запуск. Перевіряю локальний кеш моделі…');
