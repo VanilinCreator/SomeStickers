@@ -35,7 +35,7 @@ const demo=[
 {id:'space',name:'Космос',description:'Планети, зорі та космічний настрій.',category:'Теми',items:['🚀','🪐','🌍','🌙','⭐','☄️','👽','🌌'],popular:540,created:'2026-11-18'},
 {id:'school',name:'Шкільний набір',description:'Для уроків, домашки та перерв.',category:'Навчання',items:['📚','✏️','📝','🎒','🧠','📐','🔬','🏫'],popular:490,created:'2026-11-23'}
 ];
-const $=id=>document.getElementById(id);let view='popular',category='Усі',sets=[],favorites=JSON.parse(localStorage.getItem('SomeStickersCatalogFavorites')||'[]');
+const $=id=>document.getElementById(id);function readFavorites(){try{const value=JSON.parse(localStorage.getItem('SomeStickersCatalogFavorites')||'[]');return Array.isArray(value)?value.filter(x=>typeof x==='string'):[]}catch(e){return []}}let view='popular',category='Усі',sets=[],favorites=readFavorites();
 const stickerDiscover=[
 {emoji:'🫠',name:'Розтанув',category:'Емоції',date:'2026-11-24'},
 {emoji:'🫡',name:'Є, прийнято',category:'Реакції',date:'2026-11-24'},
