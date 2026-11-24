@@ -5,6 +5,7 @@
     <application
         android:allowBackup="false"
         android:label="SomeStickers"
+        android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false"
         android:supportsRtl="true">
