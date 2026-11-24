@@ -1,0 +1,59 @@
+/* SomeStickers UI System — v0.29 */
+:root{
+  --ss-radius:18px;
+  --ss-radius-sm:12px;
+  --ss-shadow:0 12px 34px rgba(0,0,0,.16);
+  --ss-ease:cubic-bezier(.2,.75,.25,1);
+  --ss-focus:0 0 0 3px color-mix(in srgb,var(--accent,#806cff) 28%,transparent);
+}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.005em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,a,input,select,textarea{ -webkit-tap-highlight-color:transparent}
+button,.back,.tab,.theme,.primary,.danger,.favorite-btn,.card,.panel,.release,.stat-card,.event{
+  transition:background-color .2s var(--ss-ease),border-color .2s var(--ss-ease),color .2s var(--ss-ease),box-shadow .2s var(--ss-ease),transform .2s var(--ss-ease),filter .2s var(--ss-ease);
+}
+button,.back,.tab,.theme{font:inherit;font-weight:650}
+button:not(:disabled){cursor:pointer}
+button:hover:not(:disabled),.back:hover,.tab:hover,.theme:hover{transform:translateY(-1px);filter:brightness(1.07)}
+button:active:not(:disabled),.back:active,.tab:active{transform:translateY(0) scale(.985)}
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:none;box-shadow:var(--ss-focus)}
+:where(input,select,textarea){max-width:100%;font:inherit}
+:where(img,video,canvas,svg){max-width:100%}
+:where(.panel,.card,.release,.hero,.stat-card){border-radius:var(--ss-radius)}
+.panel,.release,.hero{box-shadow:var(--ss-shadow)}
+.card{overflow:hidden}
+.card img{display:block}
+.card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent,#806cff) 55%,var(--line,#34425a));box-shadow:0 12px 28px rgba(0,0,0,.18)}
+h1,h2,h3{letter-spacing:-.025em}
+p{line-height:1.6}
+:where(.grid,.cards,.sticker-grid){gap:14px}
+:where(.field input,.field textarea,.field select,input,select,textarea){border-radius:var(--ss-radius-sm)}
+:where(.empty){border-radius:var(--ss-radius)}
+#ssMenuButton{transition:transform .2s var(--ss-ease),box-shadow .2s var(--ss-ease),background .2s var(--ss-ease)}
+#ssMenuButton:hover{transform:translateY(-2px);box-shadow:0 12px 30px #0003}
+#ssDrawer{box-shadow:0 24px 70px #0005}
+#ssDrawer a{transition:background .18s ease,color .18s ease,transform .18s ease}
+#ssDrawer a:hover{transform:translateX(3px)}
+/* Responsive layout guardrails */
+@media(max-width:760px){
+  body{padding-left:clamp(12px,3vw,18px);padding-right:clamp(12px,3vw,18px)}
+  .wrap{width:100%;max-width:100%}
+  header,.top,.row{gap:10px}
+  .panel{padding:clamp(12px,3vw,17px)}
+  .tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:5px;scrollbar-width:thin}
+  .tabs>*{flex:0 0 auto}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,155px),1fr))}
+  table{display:block;max-width:100%;overflow-x:auto}
+  canvas{max-width:100%;height:auto}
+}
+@media(max-width:480px){
+  h1{font-size:clamp(24px,7vw,32px)}
+  h2{font-size:clamp(19px,5.5vw,24px)}
+  button,.back,.tab,.theme{min-height:42px}
+  .actions{flex-wrap:wrap}
+  .actions>*{min-width:0}
+  .grid{gap:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
