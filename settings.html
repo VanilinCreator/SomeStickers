@@ -18,6 +18,7 @@ select,button{font:inherit}select{max-width:48%;padding:9px 12px;border:1px soli
 @media(max-width:600px){body{padding:15px}.section{padding:16px}.setting{align-items:flex-start}.setting select{max-width:46%}}
 </style>
   <link rel="stylesheet" href="ui-system.css?v=0.29">
+  <link rel="stylesheet" href="mega-update.css?v=1.2">
 </head>
 <body>
 <div class="wrap">
@@ -28,6 +29,10 @@ select,button{font:inherit}select{max-width:48%;padding:9px 12px;border:1px soli
 <label class="setting"><span><strong>Показувати назви емодзі</strong><small>Підпис під кожним емодзі</small></span><input class="switch" type="checkbox" id="showNames"></label>
 <label class="setting"><span><strong>Анімації інтерфейсу</strong><small>Плавні переходи та рух карток</small></span><input class="switch" type="checkbox" id="motion"></label>
 <label class="setting"><span><strong>Ступінь оптимізації</strong><small>Впливає на анімації, розмиття та тіні на всіх сторінках сайту</small></span><select id="optimization"><option value="1">1 — Не оптимізовано</option><option value="2">2 — Легка оптимізація</option><option value="3">3 — Збалансовано</option><option value="4">4 — Висока оптимізація</option><option value="5">5 — Максимальна оптимізація</option></select></label>
+</section>
+<section class="section"><h2>✨ PRO Settings</h2><p class="hint">Розширене налаштування інтерфейсу SomeStickers. Параметри застосовуються на всіх сторінках у цьому браузері.</p>
+<label class="setting"><span><strong>Акцентний колір</strong><small>Колір основних кнопок та активних елементів</small></span><select id="accent"><option value="violet">Фіолетовий</option><option value="blue">Синій</option><option value="green">Зелений</option><option value="orange">Помаранчевий</option><option value="pink">Рожевий</option></select></label>
+<label class="setting"><span><strong>Щільність інтерфейсу</strong><small>Компактне або просторе розташування панелей</small></span><select id="density"><option value="comfortable">Просторий</option><option value="compact">Компактний</option></select></label>
 </section>
 <section class="section"><h2>🔊 Звук та взаємодія</h2><p class="hint">Керування відгуком під час натискання.</p>
 <label class="setting"><span><strong>Звуковий відгук</strong><small>Короткий звук під час дій</small></span><input class="switch" type="checkbox" id="sound"></label>
@@ -50,14 +55,14 @@ select,button{font:inherit}select{max-width:48%;padding:9px 12px;border:1px soli
 </div>
 <script>
 const KEY='SomeStickersSettings';
-const defaults={theme:'system',cardSize:'normal',showNames:true,motion:true,optimization:3,sound:true,startCategory:'all',confirmClear:true};
+const defaults={theme:'system',cardSize:'normal',showNames:true,motion:true,optimization:3,sound:true,startCategory:'all',confirmClear:true,accent:'violet',density:'comfortable'};
 let prefs={...defaults};
 try{prefs={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){}
 const $=id=>document.getElementById(id);
 function status(message){$('status').textContent=message}
 function applyOptimization(){if(window.applySomeStickersOptimization)window.applySomeStickersOptimization()}
 function save(){localStorage.setItem(KEY,JSON.stringify(prefs));applyTheme();applyOptimization();status('✓ Налаштування збережено');}
-function applyTheme(){const t=prefs.theme==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):prefs.theme;document.documentElement.dataset.theme=t}
+function applyTheme(){const t=prefs.theme==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):prefs.theme;document.documentElement.dataset.theme=t;document.documentElement.dataset.accent=prefs.accent||'violet';document.documentElement.dataset.density=prefs.density||'comfortable'}
 function load(){Object.keys(defaults).forEach(k=>{const el=$(k);if(el.type==='checkbox')el.checked=!!prefs[k];else el.value=prefs[k]})}
 Object.keys(defaults).forEach(k=>$(k).addEventListener('change',e=>{prefs[k]=e.target.type==='checkbox'?e.target.checked:e.target.value;save()}));
 const BACKUP_VERSION=2;
