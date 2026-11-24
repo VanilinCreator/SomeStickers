@@ -55,4 +55,5 @@ $('clearProfile').onclick=()=>{if(!confirm('Скинути ім’я, опис �
 (async()=>{try{db=await openDB();paintProfile();await Promise.all([renderStickers(),renderSets(),renderHistory()])}catch(e){say('Не вдалося відкрити локальне сховище браузера.')}})();
 </script><script src="navigation.js"></script>
 <script src="optimization.js"></script>
+<script src="mega-update.js?v=1.2"></script>
 </body></html>
