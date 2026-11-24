@@ -201,23 +201,38 @@
 
         .filter-buttons {
             display: flex;
+            align-items: center;
             gap: 8px;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
             overflow-x: auto;
-            padding-bottom: 4px;
+            overflow-y: hidden;
+            padding: 6px 4px 10px;
             scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
         }
 
         .filter-btn {
+            display: inline-flex;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             background: var(--card-bg);
             color: var(--text);
             border: 1px solid var(--card-border);
             border-radius: 20px;
-            padding: 7px 14px;
+            padding: 9px 14px;
+            min-height: 42px;
             font-size: 13px;
+            line-height: 1.25;
             font-weight: 600;
             cursor: pointer;
             white-space: nowrap;
             transition: all 0.2s ease;
+            scroll-snap-align: start;
         }
 
         .filter-btn:hover {
